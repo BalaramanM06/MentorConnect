@@ -1,0 +1,4 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://balaramanmit2023:MuthuRajBala%4021@mentorconnect.qpw27.mongodb.net/Mentor?retryWrites=true&w=majority
