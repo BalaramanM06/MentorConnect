@@ -1,0 +1,109 @@
+/* LandingPage.css */
+.landing-page {
+    font-family: "Arial", sans-serif;
+    text-align: center;
+    color: #333;
+    width: auto ;
+  }
+  
+  .hero-section {
+    background: linear-gradient(90deg, #4b6cb7, #182848);
+    color: white;
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .signup-btn, .login-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .signup-btn {
+    background: #f9a826;
+    color: #182848;
+    font-weight: bold;
+  }
+  
+  .signup-btn:hover {
+    background: #ffbb33;
+  }
+  
+  .login-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+  }
+  
+  .login-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+  }
+  
+  .features, .testimonials, .get-started {
+    padding: 4rem 2rem;
+  }
+  
+  .features h2, .testimonials h2, .get-started h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .feature-cards {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .feature-card {
+    background: #f9f9f9;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 280px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .testimonial-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .testimonial {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 320px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .get-started {
+    background: linear-gradient(90deg, #182848, #4b6cb7);
+    color: white;
+    padding: 3rem;
+  }
+  
+  .get-started p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  

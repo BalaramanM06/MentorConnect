@@ -1,0 +1,105 @@
+/* Login.css */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #182848, #4b6cb7);
+  }
+  
+  .login-box {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  h2 {
+    color: #182848;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    color: #555;
+    font-size: 1rem;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #182848;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .login-btn:hover {
+    background: #4b6cb7;
+  }
+  
+  .divider {
+    margin: 15px 0;
+    font-weight: bold;
+    color: #666;
+  }
+  
+  .social-login button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .google-btn {
+    background: #dd4b39;
+    color: white;
+  }
+  
+  .microsoft-btn {
+    background: #0078d4;
+    color: white;
+  }
+  
+  .linkedin-btn {
+    background: #0077b5;
+    color: white;
+  }
+  
+  .social-login button:hover {
+    transform: scale(1.05);
+  }
+  
+  a {
+    color: #182848;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .signup-link:hover {
+    cursor:pointer ;
+  }
+  

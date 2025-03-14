@@ -1,0 +1,76 @@
+/* Navbar.css */
+.navbar {
+    background: linear-gradient(90deg, #4b6cb7, #182848);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 1200px;
+  }
+  
+  .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .nav-links li {
+    display: inline;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .nav-links a:hover {
+    color: #f9a826;
+  }
+  
+  .login-btn {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .login-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+  }
+  
+  .signup-btn {
+    background: #f9a826;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    color: #182848;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .signup-btn:hover {
+    background: #ffbb33;
+  }
+  
