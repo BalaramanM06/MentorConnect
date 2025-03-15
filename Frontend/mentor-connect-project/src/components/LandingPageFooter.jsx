@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import "./LandingPageFooter.css";
 
 export default function LandingPageFooter() {
-  const navigate = useNavigate(); // Initialize navigation hook
-
+  const navigate = useNavigate(); 
+  
   return (
     <footer className="footer">
       <div className="footer-content">

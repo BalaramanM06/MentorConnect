@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import "./LandingPageBody.css";
 import Navbar from "./LandingPageNavBar";
 export default function LandingPageBody() {
@@ -12,7 +11,7 @@ export default function LandingPageBody() {
                     <h1>Connecting Mentors & Students for a Brighter Future</h1>
                     <p>Find the perfect mentor to guide your learning journey and career growth.</p>
                     <div className="cta-buttons">
-                        <button onClick={() => navigate("/signup")} className="signup-btn">Get Started</button>
+                        <button onClick={() => navigate("/signup")} className="get-started-btn">Get Started</button>
                     </div>
                 </div>
             </header>
@@ -52,7 +51,7 @@ export default function LandingPageBody() {
             <section className="get-started">
                 <h2>Start Your Mentorship Journey Today</h2>
                 <p>Sign up now and take your learning to the next level.</p>
-                <Link to="/signup" className="signup-btn">Join Now</Link>
+                <button onClick={() => navigate("/signup")} className="join-btn">Join Now</button>
             </section>
         </div>
     );
