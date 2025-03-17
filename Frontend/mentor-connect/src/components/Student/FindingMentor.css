@@ -1,0 +1,151 @@
+/* Main Container */
+.mentors-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+    background: #f8fafc;
+  }
+  
+  /* Header */
+  .mentors-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .mentors-header h1 {
+    font-size: 28px;
+    color: #1e293b;
+  }
+  
+  /* Search & Filter */
+  .search-filter {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .search-bar, .filter-dropdown {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .search-bar input {
+    border: none;
+    outline: none;
+    margin-left: 10px;
+    font-size: 14px;
+    width: 200px;
+  }
+  
+  .filter-dropdown select {
+    border: none;
+    outline: none;
+    font-size: 14px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  /* Mentor List */
+  .mentors-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  /* Mentor Card */
+  .mentor-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mentor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Mentor Info */
+  .mentor-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .mentor-icon {
+    margin-right: 15px;
+    color: #1e3a8a;
+  }
+  
+  .mentor-details h2 {
+    font-size: 20px;
+    color: #334155;
+  }
+  
+  .mentor-details p {
+    font-size: 14px;
+    color: #64748b;
+  }
+  
+  /* Mentor Rating */
+  .mentor-rating {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+  }
+  
+  .star-icon {
+    color: #f59e0b;
+    margin-right: 5px;
+  }
+  
+  /* Mentor Actions */
+  .mentor-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .chat-btn, .schedule-btn {
+    background: #1e3a8a;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.3s;
+  }
+  
+  .chat-btn:hover, .schedule-btn:hover {
+    background: #2563eb;
+  }
+  
+  /* Floating Calendar */
+  .floating-calendar {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #2563eb;
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .floating-calendar:hover {
+    background: #1e40af;
+  }
+  

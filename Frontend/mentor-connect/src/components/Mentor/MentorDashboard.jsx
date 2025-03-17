@@ -1,12 +1,18 @@
-import React from 'react'
+import { useLocation } from "react-router-dom";
 
 const MentorDashboard = () => {
-    return (
-        <div className="p-6">
-            <h1 className="text-3xl font-bold">Mentor Dashboard</h1>
-            <p>Welcome, mentor! Here you can manage courses, schedule sessions, and connect with mentees.</p>
-        </div>
-    )
-}
+  const location = useLocation();
+  const { name, experience, certifications, linkedin } = location.state || {};
 
-export default MentorDashboard
+  return (
+    <div className="dashboard">
+      <h2>Mentor Dashboard</h2>
+      <p><strong>Name:</strong> {name}</p>
+      <p><strong>Experience:</strong> {experience} years</p>
+      <p><strong>Certifications:</strong> {certifications}</p>
+      <p><strong>LinkedIn:</strong> <a href={linkedin} target="_blank">Profile</a></p>
+    </div>
+  );
+};
+
+export default MentorDashboard;

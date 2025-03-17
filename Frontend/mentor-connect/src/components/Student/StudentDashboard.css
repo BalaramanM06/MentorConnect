@@ -1,0 +1,151 @@
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    background: #f4f6f9;
+  }
+  
+  .sidebar {
+    width: 280px;
+    background: #1e293b;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+  
+  .settings-icon {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    cursor: pointer;
+    color: #cbd5e1;
+    transition: color 0.3s;
+  }
+  
+  .settings-icon:hover {
+    color: white;
+  }
+  
+  .profile-section {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 40px; 
+  }
+  
+  .profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    margin-bottom: 10px;
+  }
+  
+  .profile-section h3 {
+    font-size: 20px;
+    margin: 5px 0;
+  }
+  
+  .profile-section p {
+    font-size: 14px;
+    color: #cbd5e1;
+  }
+  
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .nav-links button {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .nav-links button svg {
+    margin-right: 10px;
+  }
+  
+  .nav-links button:hover {
+    background: #334155;
+    border-radius: 5px;
+  }
+  
+  .logout-btn {
+    background: #e11d48;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: auto;
+    transition: background 0.3s;
+  }
+  
+  .logout-btn:hover {
+    background: #be123c;
+  }
+  
+  .dashboard-content {
+    flex-grow: 1;
+    padding: 40px;
+    overflow-y: auto;
+  }
+  
+  .dashboard-content h1 {
+    font-size: 28px;
+    color: #333;
+  }
+  
+  .dashboard-content ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .dashboard-content ul li {
+    background: white;
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .floating-calendar {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #2563eb;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .floating-calendar:hover {
+    transform: scale(1.1);
+  }
+  
+  .floating-calendar a {
+    color: white;
+    text-decoration: none;
+  }
+  

@@ -1,4 +1,3 @@
-/* Login.css */
 .login-container {
     display: flex;
     justify-content: center;
@@ -37,7 +36,7 @@
     font-size: 1rem;
   }
   
-  .login-btn {
+  .login-login-btn {
     width: 100%;
     padding: 12px;
     background: #182848;
@@ -49,7 +48,7 @@
     transition: background 0.3s;
   }
   
-  .login-btn:hover {
+  .login-login-btn:hover {
     background: #4b6cb7;
   }
   
@@ -57,36 +56,6 @@
     margin: 15px 0;
     font-weight: bold;
     color: #666;
-  }
-  
-  .social-login button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  
-  .google-btn {
-    background: #dd4b39;
-    color: white;
-  }
-  
-  .microsoft-btn {
-    background: #0078d4;
-    color: white;
-  }
-  
-  .linkedin-btn {
-    background: #0077b5;
-    color: white;
-  }
-  
-  .social-login button:hover {
-    transform: scale(1.05);
   }
   
   a {
@@ -101,5 +70,34 @@
 
   .signup-link:hover {
     cursor:pointer ;
+    text-decoration:underline;
   }
-  
+
+  .social-login {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-login button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    padding: 5px;
+}
+
+.social-login button:hover {
+    transform: scale(1.2);
+}
+
+.Login-Google-Logo,
+.Login-Microsoft-Logo,
+.Login-Linkedin-Logo {
+    width: 40px;
+    height: 40px;
+}

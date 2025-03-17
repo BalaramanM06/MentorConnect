@@ -1,0 +1,138 @@
+/* Main Container */
+.courses-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+    background: #f8fafc;
+  }
+  
+  /* Header */
+  .courses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .courses-header h1 {
+    font-size: 28px;
+    color: #1e293b;
+  }
+  
+  /* Search & Filter */
+  .search-filter {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .search-bar, .filter-dropdown {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .search-bar input {
+    border: none;
+    outline: none;
+    margin-left: 10px;
+    font-size: 14px;
+    width: 200px;
+  }
+  
+  .filter-dropdown select {
+    border: none;
+    outline: none;
+    font-size: 14px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  /* Course List */
+  .courses-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  /* Course Card */
+  .course-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .course-info h2 {
+    font-size: 20px;
+    color: #334155;
+    margin-bottom: 5px;
+  }
+  
+  .course-info p {
+    font-size: 14px;
+    color: #64748b;
+  }
+  
+  /* Course Status */
+  .course-status {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .status-icon {
+    margin-right: 8px;
+  }
+  
+  .status-text {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .completed {
+    color: #10b981;
+  }
+  
+  .ongoing {
+    color: #f59e0b;
+  }
+  
+  .upcoming {
+    color: #3b82f6;
+  }
+  
+  /* Progress Bar */
+  .progress-bar {
+    height: 8px;
+    width: 100%;
+    background: #e5e7eb;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: #10b981;
+    transition: width 0.5s ease-in-out;
+  }
+  
+  /* No Courses Found */
+  .no-courses {
+    text-align: center;
+    font-size: 16px;
+    color: #64748b;
+    margin-top: 20px;
+  }
+  

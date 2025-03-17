@@ -1,6 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./Login.css";
+import GoogleIcon from "../assets/Google-icon.png"
+import MicrosoftIcon from "../assets/Microsoft-icon.png" ;
+import LinkedinIcon from "../assets/LinkedIn-icon.png" ;
+
 
 export default function Login() {
     const navigate = useNavigate();
@@ -33,15 +37,15 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit" className="login-btn">Login</button>
+          <button type="submit" className="login-login-btn">Login</button>
         </form>
         <p className="divider">OR</p>
         <div className="social-login">
-        <button className="google-btn" onClick={() => navigate('/dashboard')}>Sign in with Google</button>
-        <button className="microsoft-btn" onClick={() => navigate('/dashboard')}>Sign in with Microsoft</button>
-        <button className="linkedin-btn" onClick={() => navigate('/dashboard')}>Sign in with LinkedIn</button>
+        <button className="google-btn" onClick={() => navigate("/dashboard")}> <img src={GoogleIcon} alt="Login by Google" className="Login-Google-Logo"/></button>
+        <button className="microsoft-btn" onClick={() => navigate('/dashboard')}> <img src={MicrosoftIcon} alt="Login by Microsoft" className="Login-Microsoft-Logo"/></button>
+        <button className="linkedin-btn" onClick={() => navigate('/dashboard')}> <img src={LinkedinIcon} alt="Login by LinkedIn" className="Login-Linkedin-Logo"/></button>
         </div>
-        <p>Don't have an account? <span className="signup-link" onClick={() => navigate('/signup')}>Sign Up</span></p>
+        <p>Don't have an account? <span className="signup-link" style={{color: 'blue'}} onClick={() => navigate('/signup')}>Sign Up</span></p>
       </div>
     </div>
   );

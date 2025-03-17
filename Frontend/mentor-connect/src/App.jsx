@@ -13,6 +13,12 @@ import Forum from "./components/Forum.jsx";
 import CreatePost from "./components/CreatePost.jsx";
 import PostDetail from "./components/PostDetail.jsx";
 import Help from "./components/Help.jsx";
+import SignUpStep2 from "./components/SignUpStep2.jsx";
+import StudentCourses from "./components/Student/StudentCourses.jsx";
+import FindingMentor from "./components/Student/FindingMentor.jsx";
+import Payment from "./components/Student/Payment.jsx";
+import Messages from "./components/Student/Messages.jsx";
+import CourseTracker from "./components/Student/CourseTracker.jsx";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -45,6 +51,9 @@ function App() {
     },
   ]);
 
+  const [role, setRole] = useState("");
+
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -72,8 +81,14 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/signup-step2" element={<SignUpStep2 />} role={role} />
         <Route path="/mentor-dashboard" element={<MentorDashboard />} />
         <Route path="/student-dashboard" element={<StudentDashboard />} />
+        <Route path="/student-courses" element={<StudentCourses />} />
+        <Route path="/finding-mentor" element={<FindingMentor />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/messages" element={<Messages />} />
+        <Route path="/course-tracker" element={<CourseTracker />} />
       </Routes>
     </Router>
   );

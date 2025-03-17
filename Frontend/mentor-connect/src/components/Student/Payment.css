@@ -1,0 +1,115 @@
+.payment-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .payment-container h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .fee-summary {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .payment-methods {
+    margin-bottom: 20px;
+  }
+  
+  .method-options {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .method-options button {
+    background: #f1f1f1;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .method-options button.active {
+    background: #2563eb;
+    color: white;
+  }
+  
+  .method-options button:hover {
+    background: #2563eb;
+    color: white;
+  }
+  
+  .card-details {
+    margin-bottom: 20px;
+  }
+  
+  .card-details input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .card-inputs {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .pay-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 100%;
+  }
+  
+  .pay-btn:hover {
+    background: #1e40af;
+  }
+  
+  /* Payment History */
+  .payment-history {
+    margin-top: 30px;
+  }
+  
+  .payment-history table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .payment-history th, .payment-history td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .payment-history th {
+    background: #2563eb;
+    color: white;
+  }
+  
+  .paid {
+    color: green;
+  }
+  
+  .failed {
+    color: red;
+  }
+  
