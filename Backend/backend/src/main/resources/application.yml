@@ -2,3 +2,9 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://balaramanmit2023:MuthuRajBala%4021@mentorconnect.qpw27.mongodb.net/Mentor?retryWrites=true&w=majority
+
+application:
+  security:
+    jwt:
+      secret-key: "824cbead60a7a86bd45d7c1b7fdd864492c01c21eed9645b772d64dbbac7b9bb"
+      access-token-expiration: 86400000

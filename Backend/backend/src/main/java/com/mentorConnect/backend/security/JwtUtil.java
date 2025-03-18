@@ -1,66 +1,83 @@
 package com.mentorConnect.backend.security;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.mentorConnect.backend.entity.User;
 
 import javax.crypto.SecretKey;
+import java.util.Date;
+import java.util.function.Function;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.mentorConnect.backend.entity.Role;
-import com.mentorConnect.backend.entity.User;
-import com.mentorConnect.backend.repository.UserRepo;
-
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-
-@Component
+@Service
 public class JwtUtil {
 
-    private static final SecretKey secretKeys=Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    @Value("${application.security.jwt.secret-key}")
+    private String secretKey;
 
-    private final int jwtExpirationMs=86400000;
+    @Value("${application.security.jwt.access-token-expiration}")
+    private long accessTokenExpire;
 
-    @Autowired
-    private UserRepo userRepo;
 
-    public String generateToken(String email) {
-        Optional<User> user = userRepo.findByEmail(email);
-        Set<Role> roles = user.get().getRole();
-    
-        return Jwts.builder()
-                .setSubject(email)
-                .claim("roles", roles.stream()
-                                     .map(Role::getName)
-                                     .collect(Collectors.joining(",")))
+
+
+    public String extractEmail(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+
+    public boolean isValid(String token, UserDetails user) {
+        String email = extractEmail(token);
+
+        return (email.equals(((User) user).getEmail())) && !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    public <T> T extractClaim(String token, Function<Claims, T> resolver) {
+        Claims claims = extractAllClaims(token);
+        return resolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts
+            .parserBuilder()
+            .setSigningKey(getSigninKey())
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
+    }
+
+
+    public String generateAccessToken(User user) {
+        return generateToken(user, accessTokenExpire);
+    }
+
+
+    private String generateToken(User user, long expireTime) {
+        String token = Jwts
+                .builder()
+                .setSubject(user.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
-                .signWith(secretKeys)
+                .setExpiration(new Date(System.currentTimeMillis() + expireTime ))
+                .signWith(getSigninKey())
                 .compact();
+
+        return token;
     }
 
-    public String extractUsername(String token){
-        return Jwts.parserBuilder().setSigningKey(secretKeys).build().parseClaimsJws(token).getBody().getSubject();
-    }
-
-    public Set<String> extractRoles(String token){
-        String rolesString= Jwts.parserBuilder().setSigningKey(secretKeys).build().parseClaimsJws(token).getBody().get("roles",String.class);
-    
-        return Set.of(rolesString);
-    }
-
-    public boolean isTokenValid(String token){
-        try{
-            Jwts.parserBuilder().setSigningKey(secretKeys).build().parseClaimsJws(token);
-            return true;
-
-        }catch (JwtException |IllegalArgumentException e){
-            return false;
-        }
+    private SecretKey getSigninKey() {
+        byte[] keyBytes = Decoders.BASE64URL.decode(secretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

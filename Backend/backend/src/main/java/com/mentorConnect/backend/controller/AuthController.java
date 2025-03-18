@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mentorConnect.backend.dto.RegisterRequest;
+import com.mentorConnect.backend.entity.AuthenticationResponse;
 import com.mentorConnect.backend.entity.User;
 import com.mentorConnect.backend.service.AuthService;
 
@@ -21,8 +21,8 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody RegisterRequest registerRequest){
-        return authService.register(registerRequest);
+    public ResponseEntity<AuthenticationResponse> registerUser(@RequestBody User registerRequest){
+        return ResponseEntity.ok(authService.register(registerRequest));
     }
 
     @GetMapping("/login")
