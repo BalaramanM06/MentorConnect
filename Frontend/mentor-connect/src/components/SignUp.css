@@ -2,108 +2,118 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f4f4f4;
-  padding-top: 5%;
-  padding-bottom: 5%;
-  text-overflow: scroll;
+  min-height: 100vh;
+  background: linear-gradient(to right, #182848, #4b6cb7);
+  padding: 40px 0;
+  overflow-y: auto;
 }
 
 .signup-box {
-  width: 400px;
-  background: #ffffff;
-  padding: 30px;
+  background: white;
+  padding: 2.5rem;
   border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
   text-align: center;
+  max-width: 400px;
+  width: 100%;
+  margin: 20px 0;
 }
 
 .signup-box h2 {
-  margin-bottom: 20px;
-  color: #333;
+  color: #182848;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
 }
 
 .signup-box input,
 .signup-box select {
   width: 100%;
-  padding: 10px;
-  margin: 8px 0;
-  border: 1px solid #ccc;
+  padding: 12px;
+  margin: 0;
+  border: 1px solid #e0e0e0;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .signup-box input:focus,
 .signup-box select:focus {
-  border-color: #007bff;
+  border-color: #4b6cb7;
   outline: none;
+  box-shadow: 0 0 0 2px rgba(75, 108, 183, 0.2);
+  background-color: #fff;
 }
 
-.file-upload {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  background: #eee;
-  border: 1px dashed #007bff;
-  border-radius: 5px;
-  text-align: center;
-  cursor: pointer;
-  font-size: 14px;
-  color: #007bff;
-}
-
-.file-upload:hover {
-  background: #dceaff;
-}
-
-.file-upload input {
-  display: none;
+.signup-box input:disabled {
+  background-color: #f0f0f0;
+  color: #666;
+  cursor: not-allowed;
 }
 
 button {
   width: 100%;
-  padding: 10px;
-  background: #007bff;
+  padding: 14px;
+  background: #182848;
+  color: white;
   border: none;
   border-radius: 5px;
-  color: #fff;
-  font-size: 16px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 10px;
+  transition: background 0.3s, transform 0.2s;
+  margin-top: 20px;
+  letter-spacing: 0.5px;
 }
 
-.file-upload {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 10px 0;
-  width: 100%;
+button:hover {
+  background: #4b6cb7;
+  transform: translateY(-2px);
 }
 
-.file-upload label {
-  display: block;
-  background: #007bff;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
-  width: 100%;
-}
-
-.file-upload input[type="file"] {
-  display: none;
-}
-
-.file-name {
-  margin-top: 5px;
-  font-size: 14px;
-  color: #333;
-  font-weight: bold;
+button:active {
+  transform: translateY(0);
 }
 
 .login-link {
-  padding-top: 10px;
-  color: #007bff;
+  color: #182848;
+  font-weight: bold;
   cursor: pointer;
+  margin-top: 15px;
+  display: inline-block;
+  transition: color 0.3s;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+  color: #4b6cb7;
+}
+
+.invalid-span {
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+/* Additional responsive styling */
+@media (max-height: 800px) {
+  .signup-container {
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-box {
+    padding: 2rem 1.5rem;
+  }
+
+  .signup-box h2 {
+    font-size: 1.6rem;
+  }
 }

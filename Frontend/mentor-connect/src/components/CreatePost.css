@@ -1,44 +1,101 @@
 .create-post-container {
-    max-width: 600px;
-    margin: 40px auto;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+h2 {
+  color: #3c094e;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #731196;
+  box-shadow: 0 0 5px rgba(115, 17, 150, 0.2);
+}
+
+textarea {
+  height: 200px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.submit-btn {
+  background: #731196;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  flex: 0 0 48%;
+}
+
+.cancel-btn {
+  background: #f0f0f0;
+  color: #333;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  flex: 0 0 48%;
+}
+
+.submit-btn:hover {
+  background: #d486f0;
+}
+
+.cancel-btn:hover {
+  background: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .create-post-container {
+    margin: 20px;
     padding: 20px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
   }
-  
-  h2 {
-    color: #145388;
+
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
   }
-  
-  input,
-  textarea {
+
+  .submit-btn,
+  .cancel-btn {
+    flex: 1;
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
   }
-  
-  textarea {
-    height: 120px;
-    resize: none;
-  }
-  
-  .submit-btn {
-    background: #4a90e2;
-    color: white;
-    padding: 12px 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.3s;
-  }
-  
-  .submit-btn:hover {
-    background: #145388;
-  }
-  
+}

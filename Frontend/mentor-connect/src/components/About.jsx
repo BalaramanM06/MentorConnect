@@ -1,5 +1,6 @@
 import React from "react";
 import "./About.css";
+import Mentorship from "../assets/Mentorship.jpg" ;
 
 const About = () => {
   return (
@@ -13,7 +14,7 @@ const About = () => {
 
         <div className="about-content">
           <div className="about-image">
-            <img src="https://source.unsplash.com/600x400/?mentorship,team" alt="Mentorship" />
+            <img src={Mentorship} alt="Mentorship" />
           </div>
           <div className="about-text">
             <h3>Why Choose Mentor Connect?</h3>

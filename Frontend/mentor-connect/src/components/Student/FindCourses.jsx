@@ -1,19 +1,27 @@
 import React, { useState } from "react";
-import "./StudentCourses.css";
+import "./FindCourses.css";
 import { Search, Filter, CheckCircle, Clock, PlayCircle } from "lucide-react";
 
-const StudentCourses = () => {
+const FindCourses = () => {
   const [courses] = useState([
-    { id: 1, title: "Full-Stack Web Development", instructor: "John Doe", status: "Ongoing", progress: 75 },
-    { id: 2, title: "Data Science with Python", instructor: "Jane Smith", status: "Completed", progress: 100 },
-    { id: 3, title: "Cybersecurity Essentials", instructor: "Mark Wilson", status: "Upcoming", progress: 0 },
-    { id: 4, title: "React & Redux Mastery", instructor: "Emily Johnson", status: "Ongoing", progress: 40 },
+    { id: 1, title: "Full-Stack Web Development", instructor: "John Doe", status: "Upcoming"},
+    { id: 2, title: "Data Science with Python", instructor: "Jane Smith", status: "Completed"},
+    { id: 3, title: "Cybersecurity Essentials", instructor: "Mark Wilson", status: "Upcoming"},
+    { id: 4, title: "React & Redux Mastery", instructor: "Emily Johnson", status: "Upcoming"},
+    { id: 5, title: "Artificial Intelligence and Machine Learning", instructor: "Emmastone", status: "Upcoming"},
+    { id: 6, title: "Software Development", instructor: "George Steel", status: "Upcoming"},
+    { id: 7, title: "", instructor: "Emily Johnson", status: "Upcoming"},
+    { id: 8, title: "React & Redux Mastery", instructor: "Emily Johnson", status: "Upcoming"},
+    { id: 9, title: "React & Redux Mastery", instructor: "Emily Johnson", status: "Upcoming"},
+    { id: 10, title: "React & Redux Mastery", instructor: "Emily Johnson", status: "Ongoing"},
+    { id: 11, title: "React & Redux Mastery", instructor: "Emily Johnson", status: "Upcoming"},
+    { id: 12, title: "React & Redux Mastery", instructor: "Emily Johnson", status: "Upcoming"},
+    { id: 13, title: "React & Redux Mastery", instructor: "Emily Johnson", status: "Upcoming"},
+    { id: 14, title: "React & Redux Mastery", instructor: "Emily Johnson", status: "Ongoing"},
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("All");
-
-  // Filtered Courses
   const filteredCourses = courses.filter((course) => {
     return (
       (filter === "All" || course.status === filter) &&
@@ -67,7 +75,6 @@ const StudentCourses = () => {
                 </div>
               </div>
 
-              {/* Progress Bar for Ongoing Courses */}
               {course.status === "Ongoing" && (
                 <div className="progress-bar">
                   <div className="progress-fill" style={{ width: `${course.progress}%` }}></div>
@@ -83,4 +90,4 @@ const StudentCourses = () => {
   );
 };
 
-export default StudentCourses;
+export default FindCourses;

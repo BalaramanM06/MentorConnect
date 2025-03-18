@@ -16,14 +16,12 @@ export default function LandingPageFooter() {
           <ul>
             <li onClick={() => navigate("/about")}>About</li>
             <li onClick={() => navigate("/services")}>Services</li>
-            <li onClick={() => navigate("/contact")}>Contact</li>
-            <li onClick={() => navigate("/faq")}>FAQ</li>
           </ul>
         </div>
         <div className="footer-section contact">
           <h3>Contact Us</h3>
-          <p>Email: support@mentorconnect.com</p>
-          <p>Phone: +123 456 7890</p>
+          <p>Email: balaramanm.it2023@citchennai.net</p>
+          <p>Phone: +91 9876543210</p>
         </div>
       </div>
       <div className="footer-bottom">

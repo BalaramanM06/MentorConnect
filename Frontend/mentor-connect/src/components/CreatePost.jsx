@@ -1,41 +1,66 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./CreatePost.css";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './CreatePost.css';
 
-const CreatePost = () => {
+const CreatePost = ({ addNewPost }) => {
+  const [author, setAuthor] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const navigate = useNavigate();
-  const [post, setPost] = useState({ title: "", content: "" });
-
-  const handleChange = (e) => {
-    setPost({ ...post, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Post created successfully!");
-    navigate("/forum");
+    const newPost = {
+      id: Date.now(),
+      author,
+      title,
+      content,
+      date: new Date().toLocaleDateString(),
+      comments: []
+    };
+    addNewPost(newPost);
+    navigate('/forum');
   };
 
   return (
     <div className="create-post-container">
-      <h2>Create a New Discussion</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="title"
-          placeholder="Post Title"
-          value={post.title}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="content"
-          placeholder="Write your thoughts here..."
-          value={post.content}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit" className="submit-btn">Post</button>
+      <h1>Create a New Post</h1>
+      <form className="post-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="author">Your Name</label>
+          <input
+            type="text"
+            id="author"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="title">Title</label>
+          <input
+            type="text"
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="content">Content</label>
+          <textarea
+            id="content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-buttons">
+          <button type="button" onClick={() => navigate('/forum')}>
+            Cancel
+          </button>
+          <button type="submit">Submit Post</button>
+        </div>
       </form>
     </div>
   );

@@ -19,8 +19,8 @@ export default function LandingPageNavbar() {
           <li onClick={() => navigate("/faq")}>FAQ</li>
           <li onClick={() => navigate("/help")}>Help</li>
           <li onClick={() => navigate("/about")}>About</li>
-          <li onClick={() => navigate("/login")} className="login-btn">Login</li>
-          <li onClick={() => navigate("/signup")} className="signup-btn">SignUp</li>
+          <li onClick={() => navigate("/login")} className="nav-login-btn">Login</li>
+          <li onClick={() => navigate("/signup")} className="nav-signup-btn">SignUp</li>
         </ul>
       </div>
     </nav>

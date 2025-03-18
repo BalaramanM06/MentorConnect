@@ -1,151 +1,230 @@
-.dashboard-container {
-    display: flex;
-    height: 100vh;
-    background: #f4f6f9;
-  }
-  
-  .sidebar {
-    width: 280px;
-    background: #1e293b;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
-    position: relative;
-  }
-  
-  .settings-icon {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    cursor: pointer;
-    color: #cbd5e1;
-    transition: color 0.3s;
-  }
-  
-  .settings-icon:hover {
-    color: white;
-  }
-  
-  .profile-section {
-    text-align: center;
-    margin-bottom: 20px;
-    margin-top: 40px; 
-  }
-  
-  .profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #fff;
-    margin-bottom: 10px;
-  }
-  
-  .profile-section h3 {
-    font-size: 20px;
-    margin: 5px 0;
-  }
-  
-  .profile-section p {
-    font-size: 14px;
-    color: #cbd5e1;
-  }
-  
-  .nav-links {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  .nav-links button {
-    display: flex;
-    align-items: center;
-    background: none;
-    border: none;
-    color: white;
-    padding: 12px;
-    font-size: 16px;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .nav-links button svg {
-    margin-right: 10px;
-  }
-  
-  .nav-links button:hover {
-    background: #334155;
-    border-radius: 5px;
-  }
-  
-  .logout-btn {
-    background: #e11d48;
-    color: white;
-    padding: 12px;
-    width: 100%;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: auto;
-    transition: background 0.3s;
-  }
-  
-  .logout-btn:hover {
-    background: #be123c;
-  }
-  
-  .dashboard-content {
-    flex-grow: 1;
-    padding: 40px;
-    overflow-y: auto;
-  }
-  
-  .dashboard-content h1 {
-    font-size: 28px;
-    color: #333;
-  }
-  
-  .dashboard-content ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .dashboard-content ul li {
-    background: white;
-    padding: 10px 15px;
-    margin: 5px 0;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .floating-calendar {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #2563eb;
-    color: white;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: transform 0.3s;
-  }
-  
-  .floating-calendar:hover {
-    transform: scale(1.1);
-  }
-  
-  .floating-calendar a {
-    color: white;
-    text-decoration: none;
-  }
-  
+.student-dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f4f9;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #182848;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+}
+
+.settings-icon {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.settings-icon:hover {
+  transform: rotate(30deg);
+}
+
+.profile-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.student-dashboard-nav-links {
+  width: 90%;
+}
+
+.student-dashboard-nav-links button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  width: auto;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+.student-dashboard-nav-links button:hover {
+  color: #4b6cb7;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.student-dashboard-nav-links button svg {
+  margin-right: 10px;
+}
+
+.logout-btn {
+  margin-top: auto;
+  background-color: #e74c3c;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  width: 90%;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.logout-btn svg {
+  margin-right: 8px;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+.available-courses {
+  margin-top: 40px;
+}
+
+.ongoing-courses {
+  margin-top: 40px;
+}
+
+.course-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.course-card h4 {
+  margin-bottom: 10px;
+  color: #182848;
+  font-size: 18px;
+}
+
+.course-card p {
+  margin: 8px 0;
+  color: #555;
+}
+
+.course-progress {
+  margin: 15px 0;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #4CAF50;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.course-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.course-card button {
+  margin-top: 0;
+  padding: 8px 16px;
+  background-color: #182848;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: auto;
+  font-size: 14px;
+}
+
+.course-card .resources-btn {
+  background-color: #f5f5f5;
+  color: #182848;
+  border: 1px solid #182848;
+}
+
+.course-card .resources-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.course-card button:hover {
+  background-color: #4b6cb7;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.no-courses {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.no-courses button {
+  background-color: #182848;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.no-courses button:hover {
+  background-color: #4b6cb7;
+}
+
+.floating-calendar {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+.floating-calendar a {
+  color: #182848;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -8,151 +8,212 @@
   text-align: left;
 }
 
-h2 {
-  color: #145388;
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-p {
-  color: #333;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-
-.like-section {
+.post-header {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin: 15px 0;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.post-header h2 {
+  margin: 0;
+  text-align: left;
+  flex: 1;
+  min-width: 300px;
+  color: #3c094e;
+}
+
+.post-actions-buttons {
+  display: flex;
   gap: 10px;
+  align-items: center;
 }
 
-.like-btn, .liked-btn {
-  padding: 12px 18px;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
+.post-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+  color: #777;
+  font-size: 0.9rem;
 }
 
-.like-btn {
-  background: #e0e0e0;
-  color: #333;
+.post-edited {
+  font-style: italic;
+  color: #999;
+  font-size: 0.8rem;
 }
 
-.liked-btn {
-  background: #ff4d4d;
-  color: white;
-}
-
-.like-btn:hover {
-  background: #b3b3b3;
-}
-
-.liked-btn:hover {
-  background: #e60000;
-}
-
-.comment-btn {
+.edit-btn,
+.delete-btn {
   background: none;
   border: none;
-  font-size: 1rem;
   cursor: pointer;
-  color: #145388;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.comment-btn:hover {
-  color: #4a90e2;
-}
-
-h3 {
-  margin-top: 25px;
-  color: #145388;
-  font-size: 1.5rem;
-}
-
-/* Comment Section */
-.comments-section {
-  background: #f1f1f1;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 10px;
-}
-
-.comment-form {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.comment-form input {
-  flex: 1;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-
-.comment-form button {
-  background: #4a90e2;
-  color: white;
-  padding: 12px 18px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s;
-}
-
-.comment-form button:hover {
-  background: #145388;
-}
-
-.comments-list {
-  margin-top: 15px;
-}
-
-.comment {
-  background: #f7f7f7;
-  padding: 12px;
-  border-radius: 8px;
-  margin: 10px 0;
-  font-size: 1rem;
+  font-size: 16px;
+  padding: 6px;
+  transition: all 0.2s ease;
+  border-radius: 50%;
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
 }
 
-.comment strong {
-  color: #145388;
-  margin-right: 8px;
+.edit-btn:hover {
+  background: #f0e6f5;
+  color: #731196;
 }
 
-.no-comments {
-  font-size: 1rem;
-  color: #777;
-  font-style: italic;
+.delete-btn:hover {
+  background: #ffeeee;
+  color: #d11a2a;
 }
 
 .back-btn {
-  display: block;
-  width: 100%;
-  text-align: center;
-  background: #ccc;
-  color: black;
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 15px;
-  font-weight: bold;
-  transition: background 0.3s;
+  display: inline-block;
+  background: #f0f0f0;
+  color: #333;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .back-btn:hover {
-  background: #999;
+  background: #e0e0e0;
+}
+
+.edit-post-section {
+  margin-bottom: 20px;
+}
+
+.edit-textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  transition: border 0.3s ease;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.edit-textarea:focus {
+  outline: none;
+  border-color: #731196;
+  box-shadow: 0 0 5px rgba(115, 17, 150, 0.2);
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-edit-btn,
+.save-edit-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.cancel-edit-btn {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.save-edit-btn {
+  background: #731196;
+  color: white;
+}
+
+.cancel-edit-btn:hover {
+  background: #e0e0e0;
+}
+
+.save-edit-btn:hover {
+  background: #d486f0;
+}
+
+.post-content {
+  color: #333;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  white-space: pre-line;
+}
+
+.post-actions {
+  display: flex;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.like-btn,
+.comment-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 15px;
+  border-radius: 20px;
+  color: #333;
+}
+
+.like-btn:hover,
+.comment-btn:hover {
+  background: #f0e6f5;
+  color: #731196;
+}
+
+.comments-section {
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+  border: 1px solid #eaeaea;
+}
+
+.comment {
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 8px 0;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.05);
+  border-left: 3px solid #d486f0;
+}
+
+.no-comments {
+  font-style: italic;
+  color: #777;
+  text-align: center;
+  padding: 10px;
+}
+
+.comment-input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border 0.3s ease;
+}
+
+.comment-input:focus {
+  outline: none;
+  border-color: #731196;
 }
