@@ -1,9 +1,12 @@
 package com.mentorConnect.backend.entity;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,6 +30,11 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private Role role;
+    @DBRef
+    private List<Course> courses;
+    private String gender;
+    private Date date;
+    private Set<Date> freetime;
 
     @Override
     public String getUsername() {
