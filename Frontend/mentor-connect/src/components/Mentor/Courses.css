@@ -1,0 +1,276 @@
+.ongoing-courses-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.ongoing-courses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ongoing-courses-header h2 {
+  color: #333;
+  margin: 0;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+  padding: 8px 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  width: 300px;
+}
+
+.search-bar svg {
+  color: #888;
+  margin-right: 10px;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+}
+
+.courses-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-item {
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.stat-icon.students {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.stat-icon.sessions {
+  background-color: #e8f5e9;
+  color: #4caf50;
+}
+
+.stat-icon.upcoming {
+  background-color: #fff8e1;
+  color: #ff9800;
+}
+
+.stat-content h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.8em;
+  color: #333;
+}
+
+.stat-content p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.course-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.course-card {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s;
+}
+
+.course-card:hover {
+  transform: translateY(-3px);
+}
+
+.course-header {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
+}
+
+.course-header svg {
+  color: #5663f7;
+  margin-right: 15px;
+}
+
+.course-header h3 {
+  margin: 0 0 5px 0;
+  color: #333;
+  font-size: 1.2em;
+}
+
+.course-category {
+  background-color: #eceffe;
+  color: #5663f7;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: 500;
+}
+
+.course-details {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.detail-item:last-child {
+  margin-bottom: 0;
+}
+
+.detail-item strong {
+  color: #555;
+}
+
+.detail-item span {
+  color: #666;
+}
+
+.course-progress {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.progress-info span:first-child {
+  color: #555;
+  font-weight: 500;
+}
+
+.progress-info span:last-child {
+  color: #5663f7;
+  font-weight: 600;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #5663f7;
+  border-radius: 4px;
+}
+
+.course-actions {
+  display: flex;
+  padding: 15px;
+  gap: 10px;
+}
+
+.course-actions button {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.view-details-btn {
+  background-color: #f0f2ff;
+  color: #5663f7;
+}
+
+.view-details-btn:hover {
+  background-color: #e0e5ff;
+}
+
+.schedule-btn {
+  background-color: #5663f7;
+  color: white;
+}
+
+.schedule-btn:hover {
+  background-color: #4552e5;
+}
+
+.no-courses-message {
+  grid-column: 1 / -1;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+  color: #666;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.no-courses-message svg {
+  color: #ccc;
+  margin-bottom: 15px;
+}
+
+.no-courses-message h3 {
+  margin: 0 0 10px 0;
+  color: #555;
+}
+
+.no-courses-message p {
+  margin: 0;
+  color: #888;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ongoing-courses-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .search-bar {
+    width: 100%;
+  }
+  
+  .courses-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .course-list {
+    grid-template-columns: 1fr;
+  }
+} 

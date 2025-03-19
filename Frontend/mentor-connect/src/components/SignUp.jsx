@@ -8,9 +8,6 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    phone: "",
-    dob: "",
-    gender: "",
     role: "",
     isOAuthSignup: false,
   });
@@ -120,40 +117,6 @@ const SignUp = () => {
               </div>
             </>
           )}
-
-          <div className="form-group">
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone Number"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="dob" style={{ display: 'block', textAlign: 'left', fontSize: '14px', color: '#666', marginBottom: '5px' }}>
-              Date of Birth
-            </label>
-            <input
-              type="date"
-              id="dob"
-              name="dob"
-              value={formData.dob}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <select name="gender" value={formData.gender} onChange={handleChange} required>
-              <option value="">Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
 
           <div className="form-group">
             <select name="role" value={formData.role} onChange={handleChange} required>

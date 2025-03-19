@@ -16,11 +16,9 @@ const Messages = () => {
   const [showEmptyState, setShowEmptyState] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
 
-  // Fetch enrolled mentors from localStorage on component mount
   useEffect(() => {
     const enrolledCourses = JSON.parse(localStorage.getItem("enrolledCourses") || "[]");
 
-    // Extract unique mentors from enrolled courses
     const mentors = enrolledCourses.reduce((acc, course) => {
       if (course.instructor && !acc.some(m => m.name === course.instructor)) {
         acc.push({
@@ -29,7 +27,7 @@ const Messages = () => {
           status: course.status,
           lastActive: new Date().toISOString(),
           avatar: course.instructorAvatar || defaultAvatar,
-          isOnline: Math.random() > 0.5 // Randomly set online status for demo
+          isOnline: Math.random() > 0.5 
         });
       }
       return acc;
