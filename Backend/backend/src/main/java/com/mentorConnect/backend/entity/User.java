@@ -26,7 +26,7 @@ public class User implements UserDetails {
     private String id;
     private String firstName;
     private String lastName;
-    private String userName;
+    private String userNam;
     private String email;
     private String password;
     private Role role;
@@ -66,7 +66,7 @@ public class User implements UserDetails {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserNam() {
+        return userNam;
     }
 }

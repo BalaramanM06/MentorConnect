@@ -33,7 +33,7 @@ public class AuthService {
         user.setRole(request.getRole());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-        user.setUserName(request.getUserName());
+        user.setUserNam(request.getUserNam());
 
         user =userRepo.save(user);
 

@@ -33,7 +33,6 @@ public class MentorConntroller {
             @RequestParam("courseName") String courseName,
             @RequestHeader("Authorization") String token,
             @RequestParam("description") String description) {
-            
         return mentorService.validateCertificate(certificate, mentorName, courseName,token,description);
     }
 

@@ -14,6 +14,7 @@ import com.mentorConnect.backend.entity.OldAndNewCourse;
 import com.mentorConnect.backend.entity.OldAndNewMentee;
 import com.mentorConnect.backend.entity.User;
 import com.mentorConnect.backend.entity.UserAndCourse;
+import com.mentorConnect.backend.repository.CourseRepo;
 import com.mentorConnect.backend.repository.OldAndNewCourseRepo;
 import com.mentorConnect.backend.repository.OldAndNewMenteeRepo;
 import com.mentorConnect.backend.repository.UserAndCourseRepo;
@@ -22,15 +23,15 @@ import com.mentorConnect.backend.security.JwtUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
 public class MentorService {
+
+    @Autowired
+    private CourseRepo courseRepo;
 
     @Autowired
     private UserRepo userRepo;
@@ -65,36 +66,46 @@ public class MentorService {
         String email = jwtUtil.extractEmail(token);
 
         try {
-            // Save file temporarily for Tesseract processing
-            Path tempFile = Files.createTempFile("certificate", ".png");
-            Files.copy(certificate.getInputStream(), tempFile, StandardCopyOption.REPLACE_EXISTING);
+            // // Save file temporarily for Tesseract processing
+            // Path tempFile = Files.createTempFile("certificate", ".png");
+            // Files.copy(certificate.getInputStream(), tempFile, StandardCopyOption.REPLACE_EXISTING);
             
-            // Extract text from the image
-            String extractedText = extractTextFromImage(tempFile.toFile());
+            // // Extract text from the image
+            // String extractedText = extractTextFromImage(tempFile.toFile());
             
-            // Delete the temporary file
-            Files.delete(tempFile);
+            // // Delete the temporary file
+            // Files.delete(tempFile);
 
             // Validate extracted text
-            Map<String, Object> validationResult = validateCertificateText(extractedText, mentorName, courseName);
+            Map<String, Object> validationResult =new HashMap<>();
             Optional<User> user =userRepo.findByEmail(email);
-            if(user.isPresent()){
-                User u=user.get();
-                Course c=new Course();
+            if (user.isPresent()) {
+                User u = user.get();
+                Course c = new Course();
                 c.setCourseName(courseName);
                 c.setDescription(description);
                 c.setImage(certificate.getBytes());
+            
+                // Save Course first
+                c = courseRepo.save(c);  // Ensure Course gets an ID before referencing it
+            
+                if (u.getCourses() == null) {
+                    u.setCourses(new ArrayList<>());
+                }
                 u.getCourses().add(c);
-                userRepo.save(u);
+                userRepo.save(u); // Save User after updating courses list
+            
+                // Create UserAndCourse reference
                 UserAndCourse userAndCourse = new UserAndCourse();
                 userAndCourse.setCourse(c);
                 userAndCourse.setUser(u);
-                userAndCourseRepo.save(userAndCourse);
+            
+                userAndCourseRepo.save(userAndCourse); // Save UserAndCourse after setting Course
             }
 
             return ResponseEntity.ok(validationResult);
 
-        } catch (IOException | TesseractException e) {
+        } catch (IOException  e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.singletonMap("error", "Error processing certificate: " + e.getMessage()));
