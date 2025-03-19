@@ -13,12 +13,18 @@ h2 {
     margin-bottom: 20px;
 }
 
-.profile-photo-section {
+.profile-photo-section,
+.logout-section {
     text-align: center;
     margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
 }
 
-.profile-photo-section h3 {
+.profile-photo-section h3,
+.logout-section h3 {
     color: #555;
     margin-bottom: 10px;
 }
@@ -63,6 +69,15 @@ button .tooltip {
 button:hover .tooltip {
     visibility: visible;
     opacity: 1;
+}
+
+.logout-button {
+    background-color: #e74c3c;
+    margin-top: 5px;
+}
+
+.logout-button:hover {
+    background-color: #c0392b;
 }
 
 p {

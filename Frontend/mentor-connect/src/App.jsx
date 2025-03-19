@@ -19,7 +19,10 @@ import FindingMentor from "./components/Student/FindingMentor.jsx";
 import Payment from "./components/Student/Payment.jsx";
 import Messages from "./components/Student/Messages.jsx";
 import CourseTracker from "./components/Student/CourseTracker.jsx";
-import Setting from "./components/Student/Setting.jsx" ;
+import Setting from "./components/Student/Setting.jsx";
+import Enroll from "./components/Student/Enroll.jsx";
+import StudentScheduling from "./components/Student/StudentScheduling.jsx";
+import StudentResources from "./components/Student/StudentResources.jsx";
 
 function App() {
   const [posts, setPosts] = useState(() => {
@@ -113,6 +116,9 @@ function App() {
         <Route path="/messages" element={<Messages />} />
         <Route path="/course-tracker" element={<CourseTracker />} />
         <Route path="/setting" element={<Setting />} />
+        <Route path="/enroll" element={<Enroll />} />
+        <Route path="/scheduling" element={<StudentScheduling />} />
+        <Route path="/resources" element={<StudentResources />} />
       </Routes>
     </Router>
   );

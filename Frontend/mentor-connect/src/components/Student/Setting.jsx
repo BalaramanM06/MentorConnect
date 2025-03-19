@@ -22,6 +22,16 @@ const Setting = () => {
         document.getElementById('photo-input').click();
     };
 
+    const handleLogout = () => {
+        const confirmLogout = window.confirm("Are you sure you want to logout?");
+        if (confirmLogout) {
+            // Clear any stored user data
+            localStorage.removeItem("enrolledCourses");
+            // Redirect to login page
+            navigate('/login');
+        }
+    };
+
     return (
         <div className="setting-container">
             <h2>Settings</h2>
@@ -40,8 +50,16 @@ const Setting = () => {
                 </button>
                 <p>Current Photo: {photoName}</p>
             </div>
+
+            <div className="logout-section">
+                <h3>Account</h3>
+                <button onClick={handleLogout} className="logout-button">
+                    Logout
+                </button>
+                <p>Sign out from your account</p>
+            </div>
         </div>
     );
 };
 
-export default Setting;
+export default Setting; 

@@ -1,32 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { LogOut, User, Calendar, BookOpen, MessageCircle, Users, CreditCard, FileText, Settings } from "lucide-react";
+import { LogOut, User, Calendar, BookOpen, MessageCircle, Users, CreditCard, FileText, Settings, BookOpenCheck } from "lucide-react";
 import "./StudentDashboard.css";
 import defaultProfile from "../../assets/default-profile.jpeg";
+import StudentNotification from "./StudentNotification";
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { name, role, degree, specialization, university, linkedin } = location.state || {};
 
-  const [courses, setCourses] = useState([
-    {
-      id: 1,
-      title: "Introduction to AI",
-      mentor: "Dr. John Doe",
-      progress: 65,
-      nextClass: "Wed, Jun 15, 2:00 PM",
-      completed: "7/12 modules"
-    },
-    {
-      id: 2,
-      title: "Advanced React",
-      mentor: "Jane Smith",
-      progress: 30,
-      nextClass: "Fri, Jun 17, 3:30 PM",
-      completed: "3/10 modules"
-    }
-  ]);
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+
+  useEffect(() => {
+    // Load enrolled courses from local storage
+    const storedCourses = JSON.parse(localStorage.getItem("enrolledCourses") || "[]");
+
+    // Filter only ongoing courses
+    const ongoingCourses = storedCourses.filter(course => course.status === "Ongoing");
+    setEnrolledCourses(ongoingCourses);
+  }, []);
 
   const handleLogout = () => {
     navigate("/login");
@@ -39,6 +32,8 @@ const StudentDashboard = () => {
 
   return (
     <div className="student-dashboard-container">
+      <StudentNotification />
+
       <aside className="sidebar">
         <div className="settings-icon" onClick={() => navigate("/setting")}>
           <Settings size={24} />
@@ -55,6 +50,7 @@ const StudentDashboard = () => {
             { icon: <BookOpen size={20} />, label: "Find Courses", path: "/find-courses" },
             { icon: <Users size={20} />, label: "Find Mentors", path: "/finding-mentor" },
             { icon: <MessageCircle size={20} />, label: "Messages", path: "/messages" },
+            { icon: <BookOpenCheck size={20} />, label: "Resources", path: "/resources" },
             { icon: <CreditCard size={20} />, label: "Payments", path: "/payment" },
             { icon: <FileText size={20} />, label: "Course Tracker", path: "/course-tracker" },
           ].map((item) => (
@@ -77,27 +73,35 @@ const StudentDashboard = () => {
 
         <div className="ongoing-courses">
           <h3>Your Ongoing Courses</h3>
-          {courses.length > 0 ? (
-            courses.map((course) => (
+          {enrolledCourses.length > 0 ? (
+            enrolledCourses.map((course) => (
               <div key={course.id} className="course-card">
                 <h4>{course.title}</h4>
-                <p><strong>Mentor:</strong> {course.mentor}</p>
+                <p><strong>Instructor:</strong> {course.instructor}</p>
                 <div className="course-progress">
                   <div className="progress-label">
-                    <span>Progress: {course.progress}%</span>
-                    <span>{course.completed}</span>
+                    <span>Progress: {course.progress || 0}%</span>
+                    <span>{course.progress ? `${Math.floor(course.progress / 10)}/${course.duration?.split(' ')[0] || 10}` : '0/10'} modules</span>
                   </div>
                   <div className="progress-bar">
                     <div
                       className="progress-fill"
-                      style={{ width: `${course.progress}%` }}
+                      style={{ width: `${course.progress || 0}%` }}
                     ></div>
                   </div>
                 </div>
-                <p><strong>Next Class:</strong> {course.nextClass}</p>
+                <div className="course-tags">
+                  {course.category && <span className="course-category">{course.category}</span>}
+                  {course.level && <span className="course-level">{course.level}</span>}
+                </div>
+                <p><strong>Enrolled on:</strong> {course.enrollmentDate ? new Date(course.enrollmentDate).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric"
+                }) : 'N/A'}</p>
                 <div className="course-actions">
                   <button onClick={() => handleContinue(course.id)}>Continue Learning</button>
-                  <button className="resources-btn">Resources</button>
+                  <button className="resources-btn" onClick={() => navigate("/resources")}>Resources</button>
                 </div>
               </div>
             ))
@@ -118,9 +122,13 @@ const StudentDashboard = () => {
       </main>
 
       <div className="floating-calendar">
-        <a href="https://calendar.google.com" target="_blank" rel="noopener noreferrer">
+        <button
+          className="calendar-button"
+          onClick={() => navigate("/scheduling")}
+          title="Schedule a session"
+        >
           <Calendar size={40} />
-        </a>
+        </button>
       </div>
     </div>
   );

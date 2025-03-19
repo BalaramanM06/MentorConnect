@@ -1,0 +1,347 @@
+.resources-container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f5f7fa;
+  border-radius: 10px;
+  min-height: 100vh;
+}
+
+.resources-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.resources-header h1 {
+  font-size: 28px;
+  color: #182848;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.resources-intro {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+/* Mentor selection styles */
+.mentors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.mentor-resources-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.mentor-resources-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.mentor-resources-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.mentor-resources-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mentor-resources-info {
+  flex: 1;
+}
+
+.mentor-resources-info h2 {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+  color: #182848;
+}
+
+.mentor-resources-info p {
+  margin: 0;
+  color: #4b6cb7;
+  font-size: 14px;
+}
+
+.chevron-icon {
+  color: #999;
+  transition: transform 0.3s ease;
+}
+
+.mentor-resources-card:hover .chevron-icon {
+  transform: translateX(5px);
+  color: #182848;
+}
+
+/* Back button styles */
+.back-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 15px;
+  color: #182848;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: rgba(24, 40, 72, 0.1);
+}
+
+/* Selected mentor banner */
+.mentor-info-banner {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.mentor-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20px;
+}
+
+.mentor-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mentor-details h2 {
+  margin: 0 0 5px 0;
+  font-size: 22px;
+  color: #182848;
+}
+
+.mentor-details p {
+  margin: 0;
+  color: #4b6cb7;
+  font-size: 16px;
+}
+
+/* Resources controls */
+.resources-controls {
+  margin-bottom: 30px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  padding: 0 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.search-box input {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background: transparent;
+}
+
+.search-box svg {
+  color: #999;
+}
+
+.resource-filters {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.resource-filters button {
+  background: none;
+  border: 1px solid #ddd;
+  color: #555;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.resource-filters button.active {
+  background-color: #182848;
+  color: white;
+  border-color: #182848;
+}
+
+.resource-filters button:hover:not(.active) {
+  background-color: #f0f0f0;
+}
+
+/* Resources list */
+.resources-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.resource-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  transition: all 0.3s ease;
+}
+
+.resource-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.resource-icon-container {
+  padding: 12px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.resource-icon {
+  flex-shrink: 0;
+}
+
+.resource-icon.pdf {
+  color: #e74c3c;
+}
+
+.resource-icon.video {
+  color: #3498db;
+}
+
+.resource-icon.image {
+  color: #27ae60;
+}
+
+.resource-icon.link {
+  color: #9b59b6;
+}
+
+.resource-icon.file {
+  color: #f39c12;
+}
+
+.resource-details {
+  flex: 1;
+}
+
+.resource-details h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #182848;
+}
+
+.resource-details p {
+  margin: 0 0 10px 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.resource-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 12px;
+  color: #777;
+}
+
+.download-button {
+  background-color: #4b6cb7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+.download-button:hover {
+  background-color: #182848;
+  transform: translateY(-2px);
+}
+
+.no-resources {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  text-align: center;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+  .resources-container {
+    padding: 20px;
+  }
+
+  .mentors-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .resources-list {
+    grid-template-columns: 1fr;
+  }
+
+  .resource-card {
+    flex-direction: column;
+  }
+
+  .resource-icon-container {
+    align-self: center;
+  }
+
+  .download-button {
+    width: 100%;
+    justify-content: center;
+    margin-top: 15px;
+  }
+
+  .resource-filters {
+    flex-wrap: wrap;
+  }
+}
