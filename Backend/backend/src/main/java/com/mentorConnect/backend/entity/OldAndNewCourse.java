@@ -1,5 +1,7 @@
 package com.mentorConnect.backend.entity;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,11 +12,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection =  "userAndCourse")
-public class UserAndCourse {
-
+@Document(collection = "oldAndNewCourse")
+public class OldAndNewCourse {
     @Id
     private String id;
-    private User user;
-    private Course course;
+    private String menteeEmail;
+    private List<UserAndCourse> oldCourse;
+    private List<UserAndCourse> newCourse;
+    private List<UserAndCourse> pendingRequest;
 }

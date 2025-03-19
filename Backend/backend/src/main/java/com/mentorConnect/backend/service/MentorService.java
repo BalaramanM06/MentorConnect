@@ -6,14 +6,17 @@ import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mentorConnect.backend.entity.Course;
+import com.mentorConnect.backend.entity.OldAndNewCourse;
 import com.mentorConnect.backend.entity.OldAndNewMentee;
 import com.mentorConnect.backend.entity.User;
 import com.mentorConnect.backend.entity.UserAndCourse;
+import com.mentorConnect.backend.repository.OldAndNewCourseRepo;
 import com.mentorConnect.backend.repository.OldAndNewMenteeRepo;
+import com.mentorConnect.backend.repository.UserAndCourseRepo;
 import com.mentorConnect.backend.repository.UserRepo;
 import com.mentorConnect.backend.security.JwtUtil;
 
@@ -26,7 +29,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@RestController
+@Service
 public class MentorService {
 
     @Autowired
@@ -34,6 +37,12 @@ public class MentorService {
 
     @Autowired
     private OldAndNewMenteeRepo oldAndNewMenteeRepo;
+
+    @Autowired
+    private OldAndNewCourseRepo oldAndNewCourseRepo;
+
+    @Autowired
+    private UserAndCourseRepo userAndCourseRepo;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -77,7 +86,12 @@ public class MentorService {
                 c.setImage(certificate.getBytes());
                 u.getCourses().add(c);
                 userRepo.save(u);
+                UserAndCourse userAndCourse = new UserAndCourse();
+                userAndCourse.setCourse(c);
+                userAndCourse.setUser(u);
+                userAndCourseRepo.save(userAndCourse);
             }
+
             return ResponseEntity.ok(validationResult);
 
         } catch (IOException | TesseractException e) {
@@ -222,11 +236,15 @@ public class MentorService {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentor or Mentee not found"));
         }
         OldAndNewMentee oldAndNewMentee = oldAndNewMenteeRepo.findByMentorEmail(mentorEmail);
-        if(oldAndNewMentee==null){
+        OldAndNewCourse oldAndNewCourse = oldAndNewCourseRepo.findByMenteeEmail(menteeEmail);
+
+        if(oldAndNewMentee==null || oldAndNewCourse == null){
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentor not found"));
         }
         UserAndCourse userAndCourse = new UserAndCourse();
+        UserAndCourse userAndCourse1 = new UserAndCourse();
         List<UserAndCourse> newMentee = oldAndNewMentee.getNewMentee();
+        List<UserAndCourse> newCourse = oldAndNewCourse.getNewCourse();
         for(UserAndCourse uac: newMentee){
             if(uac.getUser().getEmail().equals(menteeEmail) && uac.getCourse().getCourseName().equals(courseName)){
                 newMentee.remove(uac);
@@ -234,9 +252,22 @@ public class MentorService {
                 break;
             }
         }
-        if(userAndCourse.getUser()==null){
+        for(UserAndCourse uac: newCourse){
+            if(uac.getUser().getEmail().equals(mentorEmail) && uac.getCourse().getCourseName().equals(courseName)){
+                newCourse.remove(uac);
+                userAndCourse1=uac;  
+                break;
+            }
+        }
+
+        if(userAndCourse.getUser()==null || userAndCourse1.getUser()==null){
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentee not found"));
         }
+        List<UserAndCourse> oldCourse=oldAndNewCourse.getOldCourse();
+        oldCourse.add(userAndCourse1);
+        oldAndNewCourse.setOldCourse(oldCourse);
+        oldAndNewCourse.setNewCourse(newCourse);
+        oldAndNewCourseRepo.save(oldAndNewCourse);
         List<UserAndCourse> oldMentee=oldAndNewMentee.getOldMentee();
         oldMentee.add(userAndCourse);
         oldAndNewMentee.setOldMentee(oldMentee);
@@ -279,11 +310,16 @@ public class MentorService {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentor or Mentee not found"));
         }
         OldAndNewMentee oldAndNewMentee = oldAndNewMenteeRepo.findByMentorEmail(mentorEmail);
-        if(oldAndNewMentee==null){
+        OldAndNewCourse oldAndNewCourse = oldAndNewCourseRepo.findByMenteeEmail(menteeEmail);
+
+
+        if(oldAndNewMentee==null || oldAndNewCourse == null){
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentor not found"));
         }
         UserAndCourse userAndCourse = new UserAndCourse();
+        UserAndCourse userAndCourse2=new UserAndCourse();
         List<UserAndCourse> pendingRequest = oldAndNewMentee.getPendingRequest();
+        List<UserAndCourse> pendingRequest2=oldAndNewCourse.getPendingRequest();
         for(UserAndCourse uac: pendingRequest){
             if(uac.getUser().getEmail().equals(menteeEmail) && uac.getCourse().getCourseName().equals(courseName)){
                 pendingRequest.remove(uac);
@@ -291,13 +327,25 @@ public class MentorService {
                 break;
             }
         }
-        if(userAndCourse.getUser()==null){
+        for(UserAndCourse uac:pendingRequest2){
+            if(uac.getUser().getEmail().equals(mentorEmail) && uac.getCourse().getCourseName().equals(courseName)){
+                pendingRequest2.remove(uac);
+                userAndCourse2=uac;  
+                break;
+            }
+        }
+        if(userAndCourse.getUser()==null || userAndCourse2.getUser() == null){
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentee not found"));
         }
         List<UserAndCourse> newMentee = oldAndNewMentee.getNewMentee();
+        List<UserAndCourse> newCourse=oldAndNewCourse.getNewCourse();
         if(status.equals("accept")){
             newMentee.add(userAndCourse);
+            newCourse.add(userAndCourse2);
         }
+        oldAndNewCourse.setNewCourse(newCourse);
+        oldAndNewCourse.setPendingRequest(pendingRequest2);
+        oldAndNewCourseRepo.save(oldAndNewCourse);
         oldAndNewMentee.setNewMentee(newMentee);
         oldAndNewMentee.setPendingRequest(pendingRequest);
         oldAndNewMenteeRepo.save(oldAndNewMentee);
