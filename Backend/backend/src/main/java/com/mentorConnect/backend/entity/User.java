@@ -66,7 +66,7 @@ public class User implements UserDetails {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    public String getUserName() {
-        return userName;
-    }
+    // public String getUserName() {
+    // return userName;
+    // }
 }

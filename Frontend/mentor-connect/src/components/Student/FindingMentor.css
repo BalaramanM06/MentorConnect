@@ -1,151 +1,327 @@
 /* Main Container */
 .mentors-container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 40px 20px;
-    background: #f8fafc;
-  }
-  
-  /* Header */
-  .mentors-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-  }
-  
-  .mentors-header h1 {
-    font-size: 28px;
-    color: #1e293b;
-  }
-  
-  /* Search & Filter */
-  .search-filter {
-    display: flex;
-    gap: 15px;
-  }
-  
-  .search-bar, .filter-dropdown {
-    display: flex;
-    align-items: center;
-    background: white;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .search-bar input {
-    border: none;
-    outline: none;
-    margin-left: 10px;
-    font-size: 14px;
-    width: 200px;
-  }
-  
-  .filter-dropdown select {
-    border: none;
-    outline: none;
-    font-size: 14px;
-    margin-left: 10px;
-    cursor: pointer;
-  }
-  
-  /* Mentor List */
-  .mentors-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-  }
-  
-  /* Mentor Card */
-  .mentor-card {
-    background: white;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f5f7fa;
+  border-radius: 10px;
+  min-height: 100vh;
+}
+
+/* Header */
+.mentors-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+
+.mentors-header h1 {
+  font-size: 28px;
+  color: #182848;
+  margin-bottom: 20px;
+}
+
+/* Search & Filter */
+.search-filter {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 600px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 0 15px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background: transparent;
+}
+
+.filter-dropdown {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 0 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filter-dropdown select {
+  padding: 15px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Mentor List */
+.mentors-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
+  gap: 25px;
+}
+
+/* Mentor Card */
+.mentor-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.mentor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Mentor Info */
+.mentor-info {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.mentor-avatar {
+  margin-right: 20px;
+  position: relative;
+}
+
+.mentor-avatar img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #4b6cb7;
+}
+
+.mentor-details {
+  flex: 1;
+}
+
+.mentor-details h2 {
+  font-size: 22px;
+  color: #182848;
+  margin: 0 0 10px 0;
+}
+
+.mentor-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: #4b6cb7;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.mentor-specialization,
+.mentor-university {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+  color: #555;
+}
+
+.mentor-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 12px 0;
+}
+
+.star-icon {
+  color: #FFB400;
+}
+
+.mentor-bio {
+  color: #555;
+  margin: 12px 0;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.mentor-courses-section {
+  margin: 12px 0;
+}
+
+.mentor-courses-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.course-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  gap: 5px;
+}
+
+.course-tag.clickable {
+  background-color: #e1f5fe;
+  color: #0288d1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.course-tag.clickable:hover {
+  background-color: #b3e5fc;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.course-icon {
+  color: inherit;
+}
+
+.mentor-availability {
+  margin: 12px 0 0 0;
+  color: #555;
+}
+
+/* Mentor Actions */
+.mentor-actions {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  margin-top: auto;
+}
+
+.chat-btn,
+.schedule-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+  max-width: 250px;
+}
+
+.chat-btn {
+  background-color: #4b6cb7;
+  color: white;
+  margin-right: 10px;
+}
+
+.chat-btn:hover {
+  background-color: #182848;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-btn {
+  background-color: #f1f5f9;
+  color: #4b6cb7;
+  border: 1px solid #e2e8f0;
+}
+
+.schedule-btn:hover {
+  background-color: #e2e8f0;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.no-mentors {
+  grid-column: 1 / -1;
+  background-color: white;
+  padding: 30px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  color: #666;
+}
+
+/* Floating Calendar */
+.floating-calendar {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 10;
+}
+
+.calendar-button {
+  background-color: #4b6cb7;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.calendar-button:hover {
+  transform: translateY(-5px);
+  background-color: #182848;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .mentors-container {
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    display: flex;
+  }
+
+  .search-filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-bar,
+  .filter-dropdown {
+    max-width: 100%;
+  }
+
+  .mentors-list {
+    grid-template-columns: 1fr;
+  }
+
+  .mentor-info {
     flex-direction: column;
   }
-  
-  .mentor-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+
+  .mentor-avatar {
+    margin: 0 auto 20px;
   }
-  
-  /* Mentor Info */
-  .mentor-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .mentor-icon {
-    margin-right: 15px;
-    color: #1e3a8a;
-  }
-  
-  .mentor-details h2 {
-    font-size: 20px;
-    color: #334155;
-  }
-  
-  .mentor-details p {
-    font-size: 14px;
-    color: #64748b;
-  }
-  
-  /* Mentor Rating */
-  .mentor-rating {
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
-  }
-  
-  .star-icon {
-    color: #f59e0b;
-    margin-right: 5px;
-  }
-  
-  /* Mentor Actions */
+
   .mentor-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
+    flex-direction: column;
+    gap: 10px;
   }
-  
-  .chat-btn, .schedule-btn {
-    background: #1e3a8a;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: background 0.3s;
+
+  .chat-btn,
+  .schedule-btn {
+    max-width: 100%;
+    margin-right: 0;
   }
-  
-  .chat-btn:hover, .schedule-btn:hover {
-    background: #2563eb;
-  }
-  
-  /* Floating Calendar */
-  .floating-calendar {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #2563eb;
-    color: white;
-    padding: 15px;
-    border-radius: 50%;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .floating-calendar:hover {
-    background: #1e40af;
-  }
-  
+}

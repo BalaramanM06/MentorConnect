@@ -1,0 +1,465 @@
+.scheduling-container {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #f5f7fa;
+    border-radius: 10px;
+    min-height: 100vh;
+}
+
+.scheduling-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.scheduling-header h1 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 28px;
+    color: #182848;
+    margin: 0;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 15px;
+    color: #182848;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.back-button:hover {
+    background-color: rgba(24, 40, 72, 0.1);
+}
+
+/* Mentor Selection Styles */
+.mentor-selection-info {
+    margin-bottom: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mentor-selection-info p {
+    color: #555;
+    margin: 0 0 15px 0;
+}
+
+.mentor-search {
+    display: flex;
+    align-items: center;
+    background-color: #f5f7fa;
+    border-radius: 8px;
+    padding: 0 15px;
+    border: 1px solid #e0e0e0;
+}
+
+.mentor-search input {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background: transparent;
+}
+
+.mentor-search svg {
+    color: #666;
+}
+
+.mentor-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.mentor-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.mentor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.mentor-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.mentor-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mentor-info {
+    flex: 1;
+}
+
+.mentor-info h3 {
+    margin: 0 0 8px 0;
+    color: #182848;
+    font-size: 18px;
+}
+
+.mentor-specialization,
+.mentor-university {
+    color: #555;
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mentor-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 8px 0;
+}
+
+.star-icon {
+    color: #FFB400;
+}
+
+.mentor-availability {
+    color: #4b6cb7;
+    font-size: 13px;
+    margin: 8px 0 0 0;
+}
+
+.no-mentors {
+    grid-column: 1 / -1;
+    padding: 30px;
+    text-align: center;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    color: #666;
+}
+
+/* Selected Mentor Info in Scheduling Step */
+.selected-mentor-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
+}
+
+.mentor-avatar-small {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.mentor-avatar-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.selected-mentor-info h3 {
+    margin: 0 0 5px 0;
+    color: #182848;
+    font-size: 18px;
+}
+
+.mentor-details-small {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+}
+
+.mentor-availability-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4b6cb7;
+    margin-top: 10px;
+    font-size: 14px;
+    background-color: rgba(75, 108, 183, 0.1);
+    padding: 10px;
+    border-radius: 6px;
+}
+
+/* Original Scheduling Styles */
+.scheduling-info {
+    margin-bottom: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.scheduling-instruction {
+    color: #555;
+    margin: 0;
+}
+
+.calendar-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.time-header {
+    display: flex;
+    background-color: #182848;
+    color: white;
+}
+
+.time-slot-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 150px;
+    padding: 15px;
+    font-weight: 500;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.day-header {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.day-header:last-child {
+    border-right: none;
+}
+
+.day-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.day-date {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.time-slots {
+    display: flex;
+    flex-direction: column;
+}
+
+.time-row {
+    display: flex;
+    border-bottom: 1px solid #eee;
+}
+
+.time-row:last-child {
+    border-bottom: none;
+}
+
+.time-row .time-slot-label {
+    width: 150px;
+    padding: 15px;
+    background-color: #f5f7fa;
+    color: #555;
+    border-right: 1px solid #eee;
+}
+
+.time-cell {
+    flex: 1;
+    height: 60px;
+    border-right: 1px solid #eee;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.time-cell:hover {
+    background-color: rgba(75, 108, 183, 0.1);
+}
+
+.time-cell.selected {
+    background-color: rgba(75, 108, 183, 0.2);
+    color: #4b6cb7;
+}
+
+.scheduling-actions {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.submit-button {
+    background-color: #4b6cb7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 300px;
+}
+
+.submit-button:hover {
+    background-color: #182848;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.slots-selected {
+    color: #555;
+    margin: 0;
+}
+
+.success-message {
+    text-align: center;
+    padding: 50px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.success-icon {
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.success-message h2 {
+    color: #182848;
+    margin-bottom: 20px;
+}
+
+.success-message p {
+    color: #555;
+    margin: 10px 0;
+}
+
+@media (max-width: 900px) {
+    .scheduling-container {
+        padding: 20px;
+    }
+
+    .calendar-container {
+        overflow-x: auto;
+    }
+
+    .time-row {
+        min-width: 800px;
+    }
+
+    .mentor-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .time-slot-label {
+        width: 120px;
+        font-size: 14px;
+    }
+
+    .time-row .time-slot-label {
+        width: 120px;
+    }
+
+    .scheduling-header h1 {
+        font-size: 22px;
+    }
+
+    .selected-mentor-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.mentor-simple-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.mentor-simple-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.mentor-simple-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    background-color: #f5f7fa;
+}
+
+.mentor-simple-card h3 {
+    margin: 0 0 10px 0;
+    color: #182848;
+    font-size: 18px;
+}
+
+.mentor-simple-card p {
+    color: #4b6cb7;
+    margin: 0;
+    font-size: 16px;
+}
+
+.simple-mentor-info {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.simple-mentor-info h3 {
+    margin: 0 0 10px 0;
+    color: #182848;
+    font-size: 22px;
+}
+
+.simple-mentor-info p {
+    color: #4b6cb7;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}

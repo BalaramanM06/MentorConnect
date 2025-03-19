@@ -1,0 +1,251 @@
+.enroll-container {
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f4f7f9;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.enroll-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+}
+
+.enroll-card h2 {
+    text-align: center;
+    color: #182848;
+    margin-bottom: 30px;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.title-icon {
+    color: #4b6cb7;
+}
+
+.enrollment-summary {
+    margin-bottom: 30px;
+}
+
+/* Table styles */
+.course-details-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 25px;
+}
+
+.course-details-table th {
+    background-color: #182848;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    padding: 18px 16px;
+    text-align: left;
+}
+
+.course-details-table td {
+    padding: 15px 16px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.course-details-table tr:last-child td {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 500;
+    color: #555;
+    width: 25%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f8f9fa;
+}
+
+.detail-value {
+    color: #333;
+}
+
+.course-category,
+.course-level {
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background-color: #e6f3ff;
+    color: #1976d2;
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+.course-level {
+    background-color: #fff0e6;
+    color: #ed6c02;
+}
+
+.certification-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #e8f5e9;
+    color: #4CAF50;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+}
+
+.course-description {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.course-description h3 {
+    font-size: 18px;
+    color: #182848;
+    margin-bottom: 12px;
+}
+
+.course-description p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.enrollment-form {
+    background-color: #fff;
+    padding: 0;
+}
+
+.form-section {
+    margin-bottom: 25px;
+    border-top: 1px solid #eee;
+    padding-top: 25px;
+}
+
+.form-section h3 {
+    color: #182848;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.enrollment-message {
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.terms-checkbox {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    line-height: 1.5;
+    color: #555;
+    gap: 10px;
+    padding-left: 0px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    width: 60%;
+}
+
+.terms-checkbox input {
+    margin-top: 3px;
+    margin-left: 10px;
+    padding-left: 0px;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.cancel-btn,
+.enroll-btn {
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn {
+    background-color: #f0f0f0;
+    color: #555;
+}
+
+.cancel-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.enroll-btn {
+    background-color: #182848;
+    color: white;
+}
+
+.enroll-btn:hover {
+    background-color: #4b6cb7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.enroll-btn:disabled {
+    background-color: #a0a0a0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+@media (max-width: 900px) {
+    .enroll-container {
+        padding: 20px;
+        width: 90%;
+    }
+}
+
+@media (max-width: 600px) {
+    .enroll-container {
+        padding: 15px;
+        width: 100%;
+    }
+
+    .enroll-card {
+        padding: 20px;
+        border-radius: 0;
+    }
+
+    .detail-label {
+        width: 35%;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .cancel-btn,
+    .enroll-btn {
+        width: 100%;
+    }
+}
