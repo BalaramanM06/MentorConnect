@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Search, BookOpenCheck, FileText, Download, X, Upload, User } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Search, BookOpenCheck, FileText, Download, X, Upload, User, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/axiosConfig";
 import ChatRoom from "../Chat/ChatRoom";
@@ -65,7 +65,7 @@ const MentorStudents = () => {
             }
         };
 
-        // Fetch enrolled students from the backend
+        // Fetch enrolled students
         const fetchEnrolledStudents = async () => {
             setIsLoading(true);
             setError(null);
@@ -73,13 +73,11 @@ const MentorStudents = () => {
             try {
                 const token = localStorage.getItem('authToken');
 
-                // Get all enrolled students from the actual backend endpoint
                 const response = await api.get("/mentor/getAllCurrUser", {
                     headers: { Authorization: `Bearer ${token}` }
                 });
 
                 if (response.data) {
-                    // Transform the data to match the expected format
                     const formattedStudents = response.data.map(student => ({
                         email: student.email || student.userEmail,
                         name: student.name || student.userName || student.email.split('@')[0].replace('.', ' '),
@@ -241,11 +239,13 @@ const MentorStudents = () => {
     const handleStudentSelect = (student) => {
         setSelectedStudent(student);
         setShowResourcesPanel(false);
+        setShowChat(false);
     };
 
     const handleStartChat = (student) => {
         setSelectedStudent(student);
         setShowChat(true);
+        setShowResourcesPanel(false);
     };
 
     const handleBackFromChat = () => {
@@ -254,25 +254,30 @@ const MentorStudents = () => {
 
     const handleResourceUpload = (e) => {
         e.preventDefault();
-        // Simulate upload process
-        setUploadProgress(0);
-        const interval = setInterval(() => {
-            setUploadProgress(prev => {
-                if (prev >= 100) {
-                    clearInterval(interval);
+        if (!selectedFile || !resourceName.trim()) return;
 
-                    // Add new resource to the list
+        // Mock upload progress
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 10;
+            setUploadProgress(progress);
+            if (progress >= 100) {
+                clearInterval(interval);
+                setTimeout(() => {
+                    // Create new resource
                     const newResource = {
                         id: Date.now().toString(),
                         name: resourceName,
                         description: resourceDescription,
-                        category: "Uploads",
+                        category: resourceDescription.includes("Web") ? "Web Development" :
+                            resourceDescription.includes("Data") ? "Data Science" : "Programming",
                         url: URL.createObjectURL(selectedFile),
-                        fileName: selectedFile.name,
-                        dateAdded: new Date().toISOString()
+                        dateAdded: new Date().toISOString(),
+                        fileName: selectedFile.name
                     };
 
-                    const updatedResources = [newResource, ...resources];
+                    // Add to resources
+                    const updatedResources = [...resources, newResource];
                     setResources(updatedResources);
                     localStorage.setItem("mentorResources", JSON.stringify(updatedResources));
 
@@ -280,286 +285,337 @@ const MentorStudents = () => {
                     setResourceName("");
                     setResourceDescription("");
                     setSelectedFile(null);
+                    setUploadProgress(0);
                     setShowUploadForm(false);
-                    return 0;
-                }
-                return prev + 10;
-            });
-        }, 200);
+                }, 500);
+            }
+        }, 300);
     };
 
     const handleDownloadResource = (resource) => {
-        // Create a temporary anchor element
-        const a = document.createElement('a');
-        a.href = resource.url;
-        a.download = resource.fileName || resource.name;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        // Create an anchor element and trigger download
+        const link = document.createElement('a');
+        link.href = resource.url;
+        link.download = resource.fileName || resource.name + '.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
-    // Helper function to get unique categories
     const getCategories = () => {
-        const categories = new Set(resources.map(r => r.category));
+        const categories = Array.from(new Set(resources.map(r => r.category)));
         return ["All", ...categories];
     };
 
-    // Filter resources by category
     const getFilteredResources = () => {
         if (selectedCategory === "All") return resources;
         return resources.filter(r => r.category === selectedCategory);
     };
 
-    // Loading state
+    // If loading
     if (isLoading) {
         return (
-            <div className="mentor-students-loading">
-                <div className="spinner"></div>
-                <p>Loading enrolled students...</p>
+            <div className="loading-container">
+                <div className="loading-spinner"></div>
+                <p>Loading students...</p>
+            </div>
+        );
+    }
+
+    // If error and no students
+    if (error && !filteredStudents.length) {
+        return (
+            <div className="error-container">
+                <p>{error}</p>
+            </div>
+        );
+    }
+
+    // Render chat if selected
+    if (showChat && selectedStudent) {
+        return (
+            <div className="chat-container">
+                <div className="chat-header">
+                    <button className="back-button" onClick={handleBackFromChat}>
+                        <ArrowLeft size={20} />
+                    </button>
+                    <div className="chat-header-info">
+                        <h3>{selectedStudent.name}</h3>
+                        <p>{selectedStudent.courses[0]?.title || 'No course'}</p>
+                    </div>
+                </div>
+                <ChatRoom
+                    recipient={selectedStudent}
+                    currentUser={currentUser}
+                />
             </div>
         );
     }
 
     return (
         <div className="mentor-students-container">
-            {error && (
-                <div className="error-banner">
-                    <p>{error}</p>
-                    <button onClick={() => setError(null)}>Dismiss</button>
+            <div className="students-header">
+                <div className="search-container">
+                    <Search className="search-icon" size={18} />
+                    <input
+                        type="text"
+                        placeholder="Search students or courses..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                 </div>
-            )}
+            </div>
 
-            {showChat && selectedStudent ? (
-                <ChatRoom
-                    currentUser={currentUser}
-                    initialSelectedMentor={selectedStudent}
-                />
-            ) : (
-                <div className="students-content">
-                    <div className="students-sidebar">
-                        <div className="sidebar-header">
-                            <h2>My Students</h2>
-                            <div className="search-container">
-                                <Search size={18} className="search-icon" />
-                                <input
-                                    type="text"
-                                    placeholder="Search students or courses..."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="search-input"
-                                />
+            <div className="students-list-container">
+                <div className="students-list">
+                    {filteredStudents.length > 0 ? (
+                        filteredStudents.map((student) => (
+                            <div
+                                key={student.email}
+                                className={`student-card ${selectedStudent && selectedStudent.email === student.email ? 'selected' : ''}`}
+                                onClick={() => handleStudentSelect(student)}
+                            >
+                                <div className="student-avatar">
+                                    {student.profilePic ? (
+                                        <img src={student.profilePic} alt={student.name} />
+                                    ) : (
+                                        <User className="fallback-avatar" size={24} />
+                                    )}
+                                </div>
+                                <div className="student-info">
+                                    <h4 className="student-name">{student.name}</h4>
+                                    <p className="student-course">{student.courses[0]?.title || 'No course'}</p>
+                                </div>
+                                <div className="student-actions">
+                                    <button
+                                        className="student-action-btn chat"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleStartChat(student);
+                                        }}
+                                    >
+                                        <BookOpenCheck size={18} />
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="empty-state">
+                            <User size={40} />
+                            <p>No students found</p>
+                        </div>
+                    )}
+                </div>
+
+                {selectedStudent && !showResourcesPanel && (
+                    <div className="student-detail">
+                        <div className="detail-header">
+                            <div className="detail-avatar">
+                                {selectedStudent.profilePic ? (
+                                    <img src={selectedStudent.profilePic} alt={selectedStudent.name} />
+                                ) : (
+                                    <User size={30} />
+                                )}
+                            </div>
+                            <div className="detail-info">
+                                <h3>{selectedStudent.name}</h3>
+                                <p>{selectedStudent.email}</p>
+                            </div>
+                            <div className="detail-actions">
+                                <button
+                                    className="detail-btn primary"
+                                    onClick={() => handleStartChat(selectedStudent)}
+                                >
+                                    <BookOpenCheck size={18} /> Start Session
+                                </button>
+                                <button
+                                    className="detail-btn secondary"
+                                    onClick={() => setShowResourcesPanel(true)}
+                                >
+                                    <FileText size={18} /> Resources
+                                </button>
                             </div>
                         </div>
-
-                        <div className="student-list">
-                            {filteredStudents.length > 0 ? (
-                                filteredStudents.map((student, index) => (
-                                    <div
-                                        key={index}
-                                        className={`student-item ${selectedStudent?.email === student.email ? "selected" : ""}`}
-                                        onClick={() => handleStudentSelect(student)}
-                                    >
-                                        <div className="student-avatar">
-                                            {student.profilePic ? (
-                                                <img src={student.profilePic} alt={student.name} />
-                                            ) : (
-                                                <User size={24} />
-                                            )}
+                        <div className="detail-content">
+                            <div className="detail-section">
+                                <h4><BookOpenCheck size={18} /> Enrolled Courses</h4>
+                                {selectedStudent.courses.map((course, index) => (
+                                    <div className="resource-card" key={index}>
+                                        <div className="resource-icon">
+                                            <BookOpenCheck size={20} />
                                         </div>
-                                        <div className="student-info">
-                                            <h3>{student.name}</h3>
-                                            <p>{student.courses.map(c => c.title).join(", ")}</p>
+                                        <div className="resource-info">
+                                            <h5 className="resource-title">{course.title}</h5>
+                                            <p className="resource-description">Status: {course.status}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="detail-section">
+                                <h4><FileText size={18} /> Shared Resources</h4>
+                                {getFilteredResources().slice(0, 3).map((resource) => (
+                                    <div className="resource-card" key={resource.id}>
+                                        <div className="resource-icon">
+                                            <FileText size={20} />
+                                        </div>
+                                        <div className="resource-info">
+                                            <h5 className="resource-title">{resource.name}</h5>
+                                            <p className="resource-description">{resource.description}</p>
+                                        </div>
+                                        <div className="resource-action">
+                                            <button
+                                                className="download-btn"
+                                                onClick={() => handleDownloadResource(resource)}
+                                            >
+                                                <Download size={18} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                                <div style={{ textAlign: 'center', marginTop: '15px' }}>
+                                    <button
+                                        className="detail-btn secondary"
+                                        onClick={() => setShowResourcesPanel(true)}
+                                    >
+                                        View All Resources
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {showResourcesPanel && (
+                    <div className="resources-panel">
+                        <div className="panel-header">
+                            <h3>Learning Resources</h3>
+                            <div className="panel-actions">
+                                <select
+                                    className="filter-dropdown"
+                                    value={selectedCategory}
+                                    onChange={(e) => setSelectedCategory(e.target.value)}
+                                >
+                                    {getCategories().map(category => (
+                                        <option key={category} value={category}>{category}</option>
+                                    ))}
+                                </select>
+                                <button
+                                    className="detail-btn secondary"
+                                    onClick={() => setShowResourcesPanel(false)}
+                                >
+                                    <ArrowLeft size={18} /> Back
+                                </button>
+                                <button
+                                    className="detail-btn primary"
+                                    onClick={() => setShowUploadForm(!showUploadForm)}
+                                >
+                                    <Upload size={18} /> {showUploadForm ? 'Cancel' : 'Upload'}
+                                </button>
+                            </div>
+                        </div>
+                        <div className="panel-content">
+                            {showUploadForm && (
+                                <div className="upload-form">
+                                    <form onSubmit={handleResourceUpload}>
+                                        <div className="form-group">
+                                            <label>Resource Name</label>
+                                            <input
+                                                type="text"
+                                                value={resourceName}
+                                                onChange={(e) => setResourceName(e.target.value)}
+                                                placeholder="Enter resource name"
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Description</label>
+                                            <textarea
+                                                value={resourceDescription}
+                                                onChange={(e) => setResourceDescription(e.target.value)}
+                                                placeholder="Enter resource description"
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="file-upload">Resource File</label>
+                                            <div
+                                                className="file-input-container"
+                                                onClick={() => document.getElementById('file-upload').click()}
+                                            >
+                                                <Upload size={30} />
+                                                <p>{selectedFile ? selectedFile.name : 'Click to upload file'}</p>
+                                                <input
+                                                    type="file"
+                                                    id="file-upload"
+                                                    onChange={(e) => setSelectedFile(e.target.files[0])}
+                                                />
+                                            </div>
+                                        </div>
+                                        {uploadProgress > 0 && (
+                                            <div className="progress-container">
+                                                <div
+                                                    className="progress-bar"
+                                                    style={{ width: `${uploadProgress}%` }}
+                                                ></div>
+                                            </div>
+                                        )}
+                                        <div className="form-actions">
+                                            <button
+                                                type="button"
+                                                className="detail-btn secondary"
+                                                onClick={() => {
+                                                    setShowUploadForm(false);
+                                                    setResourceName("");
+                                                    setResourceDescription("");
+                                                    setSelectedFile(null);
+                                                }}
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                className="detail-btn primary"
+                                                disabled={!selectedFile || !resourceName.trim()}
+                                            >
+                                                Upload Resource
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            )}
+
+                            {getFilteredResources().length > 0 ? (
+                                getFilteredResources().map((resource) => (
+                                    <div className="resource-card" key={resource.id}>
+                                        <div className="resource-icon">
+                                            <FileText size={20} />
+                                        </div>
+                                        <div className="resource-info">
+                                            <h5 className="resource-title">{resource.name}</h5>
+                                            <p className="resource-description">
+                                                {resource.description} • {resource.category}
+                                            </p>
+                                        </div>
+                                        <div className="resource-action">
+                                            <button
+                                                className="download-btn"
+                                                onClick={() => handleDownloadResource(resource)}
+                                            >
+                                                <Download size={18} />
+                                            </button>
                                         </div>
                                     </div>
                                 ))
                             ) : (
-                                <div className="no-students">
-                                    <p>No students match your search</p>
+                                <div className="empty-state">
+                                    <FileText size={40} />
+                                    <p>No resources found</p>
                                 </div>
                             )}
                         </div>
                     </div>
-
-                    <div className="student-details">
-                        {selectedStudent ? (
-                            <div className="detail-container">
-                                <div className="student-header">
-                                    <div className="student-profile">
-                                        <div className="profile-avatar">
-                                            {selectedStudent.profilePic ? (
-                                                <img src={selectedStudent.profilePic} alt={selectedStudent.name} />
-                                            ) : (
-                                                <User size={64} />
-                                            )}
-                                        </div>
-                                        <div className="profile-info">
-                                            <h2>{selectedStudent.name}</h2>
-                                            <p>{selectedStudent.email}</p>
-                                        </div>
-                                    </div>
-                                    <div className="student-actions">
-                                        <button
-                                            className="chat-button"
-                                            onClick={() => handleStartChat(selectedStudent)}
-                                        >
-                                            Start Chat
-                                        </button>
-                                        <button
-                                            className={`resources-button ${showResourcesPanel ? "active" : ""}`}
-                                            onClick={() => setShowResourcesPanel(!showResourcesPanel)}
-                                        >
-                                            {showResourcesPanel ? "Hide Resources" : "Show Resources"}
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div className="enrollment-info">
-                                    <h3>Enrolled Courses</h3>
-                                    <div className="course-list">
-                                        {selectedStudent.courses.map((course, index) => (
-                                            <div key={index} className="course-item">
-                                                <BookOpenCheck size={18} />
-                                                <span>{course.title}</span>
-                                                <span className={`status ${course.status.toLowerCase()}`}>
-                                                    {course.status}
-                                                </span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {showResourcesPanel && (
-                                    <div className="resources-panel">
-                                        <div className="resources-header">
-                                            <h3>Learning Resources</h3>
-                                            <button
-                                                className="upload-button"
-                                                onClick={() => setShowUploadForm(!showUploadForm)}
-                                            >
-                                                {showUploadForm ? "Cancel" : "Upload New"}
-                                            </button>
-                                        </div>
-
-                                        {showUploadForm && (
-                                            <div className="upload-form">
-                                                <h4>Upload New Resource</h4>
-                                                <form onSubmit={handleResourceUpload}>
-                                                    <div className="form-group">
-                                                        <label>Resource Name</label>
-                                                        <input
-                                                            type="text"
-                                                            value={resourceName}
-                                                            onChange={(e) => setResourceName(e.target.value)}
-                                                            required
-                                                        />
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label>Description</label>
-                                                        <textarea
-                                                            value={resourceDescription}
-                                                            onChange={(e) => setResourceDescription(e.target.value)}
-                                                            required
-                                                        />
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label>File</label>
-                                                        <div className="file-input">
-                                                            <input
-                                                                type="file"
-                                                                onChange={(e) => setSelectedFile(e.target.files[0])}
-                                                                required
-                                                            />
-                                                            <div className="file-preview">
-                                                                {selectedFile && (
-                                                                    <div className="selected-file">
-                                                                        <FileText size={16} />
-                                                                        <span>{selectedFile.name}</span>
-                                                                        <button
-                                                                            type="button"
-                                                                            onClick={() => setSelectedFile(null)}
-                                                                        >
-                                                                            <X size={14} />
-                                                                        </button>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {uploadProgress > 0 && (
-                                                        <div className="progress-bar">
-                                                            <div
-                                                                className="progress"
-                                                                style={{ width: `${uploadProgress}%` }}
-                                                            ></div>
-                                                        </div>
-                                                    )}
-
-                                                    <button
-                                                        type="submit"
-                                                        className="submit-button"
-                                                        disabled={!selectedFile || !resourceName}
-                                                    >
-                                                        <Upload size={16} />
-                                                        Upload Resource
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        )}
-
-                                        <div className="category-filter">
-                                            {getCategories().map((category, index) => (
-                                                <button
-                                                    key={index}
-                                                    className={`category-button ${selectedCategory === category ? "active" : ""}`}
-                                                    onClick={() => setSelectedCategory(category)}
-                                                >
-                                                    {category}
-                                                </button>
-                                            ))}
-                                        </div>
-
-                                        <div className="resources-list">
-                                            {getFilteredResources().length > 0 ? (
-                                                getFilteredResources().map((resource, index) => (
-                                                    <div key={index} className="resource-item">
-                                                        <div className="resource-info">
-                                                            <FileText size={18} />
-                                                            <div className="resource-details">
-                                                                <h4>{resource.name}</h4>
-                                                                <p>{resource.description}</p>
-                                                                <span className="resource-meta">
-                                                                    {new Date(resource.dateAdded).toLocaleDateString()} · {resource.category}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <button
-                                                            className="download-button"
-                                                            onClick={() => handleDownloadResource(resource)}
-                                                        >
-                                                            <Download size={16} />
-                                                        </button>
-                                                    </div>
-                                                ))
-                                            ) : (
-                                                <div className="no-resources">
-                                                    <p>No resources in this category</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        ) : (
-                            <div className="no-selection">
-                                <User size={64} />
-                                <h3>Select a student</h3>
-                                <p>Choose a student from the list to view details</p>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };

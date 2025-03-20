@@ -115,7 +115,7 @@ const StudentDashboard = () => {
           console.error("Error fetching enrolled courses:", coursesError);
 
           // Fallback - load enrolled courses from local storage if API fails
-          const storedCourses = JSON.parse(localStorage.getItem("enrolledCourses") || "[]");
+    const storedCourses = JSON.parse(localStorage.getItem("enrolledCourses") || "[]");
           setEnrolledCourses(storedCourses);
 
           // Extract mentors from stored courses
@@ -256,7 +256,7 @@ const StudentDashboard = () => {
           <div className="profile-info">
             <h3>{user?.name || "Student"}</h3>
             <p>{user?.email || "student@example.com"}</p>
-          </div>
+        </div>
         </div>
 
         <nav className="sidebar-nav">
@@ -328,7 +328,7 @@ const StudentDashboard = () => {
               <button onClick={() => navigate('/course-tracker')}>View All</button>
             </div>
             <div className="card-content">
-              {enrolledCourses.length > 0 ? (
+          {enrolledCourses.length > 0 ? (
                 <div className="course-list">
                   {enrolledCourses.slice(0, 3).map((course, index) => (
                     <div className="course-item" key={index}>
@@ -338,14 +338,14 @@ const StudentDashboard = () => {
                       <div className="course-info">
                         <h3>{course.title || course.courseName}</h3>
                         <p>Mentor: {course.mentor || course.mentorName}</p>
-                      </div>
+                  </div>
                       <button
                         className="continue-btn"
                         onClick={() => handleContinue(course.id || course.courseId)}
                       >
                         Continue
                       </button>
-                    </div>
+                  </div>
                   ))}
                 </div>
               ) : (
@@ -391,10 +391,10 @@ const StudentDashboard = () => {
                   <button onClick={() => navigate('/find-mentor')}>
                     Find Mentors
                   </button>
-                </div>
-              )}
-            </div>
-          </div>
+              </div>
+          )}
+        </div>
+        </div>
 
           {/* Upcoming Sessions Card */}
           <div className="dashboard-card">

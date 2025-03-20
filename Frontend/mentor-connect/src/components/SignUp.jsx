@@ -5,7 +5,9 @@ import api from '../utils/axiosConfig';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
+    userNam: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -51,34 +53,33 @@ const SignUp = () => {
       return;
     }
 
-    // Prepare data for registration
     const registrationData = {
-      name: formData.fullName,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      userName: formData.userNam,
       email: formData.email,
       password: formData.password,
-      role: formData.role,
+      role: formData.role
     };
 
-    // Submit registration
     api.post("/auth/register", registrationData)
       .then((response) => {
         console.log("Registration successful:", response);
-        // Log the full response structure
         console.log("Full response structure:", JSON.stringify(response.data));
 
-        // Save JWT token to localStorage
         if (response.data.token) {
           localStorage.setItem('authToken', response.data.token);
 
-          // Create a user object with basic fields since the backend might not provide a complete user object
           const userObj = {
-            name: formData.fullName,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            userName: formData.userNam,
             email: formData.email,
+            password: formData.password,
             role: formData.role
           };
 
-          // Navigate to appropriate dashboard based on role
-          if (formData.role === "mentor") {
+          if (formData.role === "MENTOR") {
             console.log("Navigating to mentor dashboard with user data:", userObj);
             navigate('/mentor/dashboard', { state: response.data.user || userObj });
           } else {
@@ -117,9 +118,9 @@ const SignUp = () => {
           <div className="form-group">
             <input
               type="text"
-              name="fullName"
+              name="firstName"
               placeholder="Full Name"
-              value={formData.fullName}
+              value={formData.firstName}
               onChange={handleChange}
               required
               disabled={formData.isOAuthSignup}
@@ -166,8 +167,8 @@ const SignUp = () => {
           <div className="form-group">
             <select name="role" value={formData.role} onChange={handleChange} required>
               <option value="">Are you a Mentor or Student?</option>
-              <option value="mentor">Mentor</option>
-              <option value="student">Student</option>
+              <option value="MENTOR">Mentor</option>
+              <option value="MENTEE">Student</option>
             </select>
           </div>
 

@@ -19,14 +19,12 @@ export default function Login() {
       .then((response) => {
         console.log("Login successful:", response.data);
 
-        // Save JWT token to localStorage
         if (response.data.token) {
           localStorage.setItem('authToken', response.data.token);
 
-          // Determine which dashboard to navigate to based on user role
-          const role = response.data.role || "student"; // Default to student if role not specified
+          const role = response.data.role || "student"; 
 
-          if (role === "mentor") {
+          if (role === "MENTOR") {
             navigate('/mentor/dashboard', { state: response.data.user });
           } else {
             navigate('/student/dashboard', { state: response.data.user });

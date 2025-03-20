@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Calendar, Clock, Video, User, CheckCircle, AlertCircle, Play, Monitor, Timer } from "lucide-react";
+import { Calendar, Clock, Video, User, CheckCircle, AlertCircle, Play, Monitor, Timer, X, BookOpenCheck } from "lucide-react";
 import "./UpcomingSession.css";
 
 const UpcomingSession = () => {
@@ -238,6 +238,13 @@ const UpcomingSession = () => {
                                         </div>
                                     </div>
 
+                                    {session.notes && (
+                                        <div className="session-notes">
+                                            <h4>Session Notes</h4>
+                                            <p>{session.notes}</p>
+                                        </div>
+                                    )}
+
                                     <div className="session-status-text">
                                         {getRelativeTimeDisplay(session.dateTime)}
                                     </div>
@@ -249,9 +256,22 @@ const UpcomingSession = () => {
                                             className="join-meeting-btn"
                                             onClick={() => handleJoinMeeting(session)}
                                         >
-                                            <Video size={16} />
-                                            Join
+                                            <Video size={16} /> Join Meeting
                                         </button>
+                                    )}
+                                    {status === "upcoming" && (
+                                        <>
+                                            <button className="reschedule-btn">
+                                                <Calendar size={16} /> Reschedule
+                                            </button>
+                                            <button
+                                                className="join-meeting-btn"
+                                                onClick={() => handleJoinMeeting(session)}
+                                                disabled={new Date(session.dateTime) - new Date() > 10 * 60000}
+                                            >
+                                                <Video size={16} /> Join Meeting
+                                            </button>
+                                        </>
                                     )}
                                 </div>
                             </div>
@@ -259,11 +279,11 @@ const UpcomingSession = () => {
                     })
                 ) : (
                     <div className="no-sessions">
-                        <Calendar size={48} opacity={0.3} />
-                        <p>No upcoming sessions scheduled</p>
+                        <Calendar size={40} />
+                        <h3>No upcoming sessions</h3>
+                        <p>You don't have any scheduled mentoring sessions yet.</p>
                         <button className="schedule-btn">
-                            <Calendar size={16} />
-                            Schedule a Session
+                            <Calendar size={16} /> Schedule a Session
                         </button>
                     </div>
                 )}
@@ -277,37 +297,39 @@ const UpcomingSession = () => {
 
             {/* Meeting Dialog */}
             {showMeetingDialog && selectedSession && (
-                <div className="meeting-dialog-overlay" onClick={() => setShowMeetingDialog(false)}>
-                    <div className="meeting-dialog" onClick={(e) => e.stopPropagation()}>
-                        <h3>Start Online Meeting</h3>
-
-                        <div className="meeting-details">
-                            <strong>{selectedSession.courseName}</strong>
-                            <div className="meeting-detail">
-                                <Calendar size={16} />
-                                {formatDate(selectedSession.dateTime)} at {formatTime(selectedSession.dateTime)}
-                            </div>
-                            <div className="meeting-detail">
-                                <Clock size={16} />
-                                {selectedSession.duration} minutes
-                            </div>
-                            <div className="meeting-detail">
-                                <User size={16} />
-                                {selectedSession.studentName}
+                <div className="meeting-dialog">
+                    <div className="meeting-dialog-content">
+                        <div className="meeting-dialog-header">
+                            <Video size={24} />
+                            <h3>Start Mentoring Session</h3>
+                        </div>
+                        <div className="meeting-dialog-body">
+                            <div className="meeting-info">
+                                <div className="meeting-info-item">
+                                    <User size={18} />
+                                    <span>{selectedSession.studentName}</span>
+                                </div>
+                                <div className="meeting-info-item">
+                                    <BookOpenCheck size={18} />
+                                    <span>{selectedSession.courseName}</span>
+                                </div>
+                                <div className="meeting-info-item">
+                                    <Calendar size={18} />
+                                    <span>{formatDate(selectedSession.dateTime)} at {formatTime(selectedSession.dateTime)}</span>
+                                </div>
+                                <div className="meeting-info-item">
+                                    <Clock size={18} />
+                                    <span>{selectedSession.duration} minutes</span>
+                                </div>
                             </div>
                             {selectedSession.notes && (
-                                <div className="meeting-detail">
-                                    <CheckCircle size={16} />
-                                    {selectedSession.notes}
+                                <div className="session-notes">
+                                    <h4>Session Notes</h4>
+                                    <p>{selectedSession.notes}</p>
                                 </div>
                             )}
                         </div>
-
-                        <p className="meeting-info">
-                            You are about to start a video meeting with your student. Make sure your camera and microphone are working correctly.
-                        </p>
-
-                        <div className="meeting-actions">
+                        <div className="meeting-dialog-actions">
                             <button
                                 className="cancel-meeting-btn"
                                 onClick={() => setShowMeetingDialog(false)}
@@ -318,8 +340,7 @@ const UpcomingSession = () => {
                                 className="start-meeting-btn"
                                 onClick={startMeeting}
                             >
-                                <Monitor size={16} />
-                                Start Meeting
+                                <Video size={18} /> Start Session
                             </button>
                         </div>
                     </div>

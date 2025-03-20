@@ -1,38 +1,38 @@
+/* Modern Student Notification Styling */
 .student-notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
+    position: relative;
+    z-index: 100;
 }
 
 .notification-icon {
     position: relative;
     width: 40px;
     height: 40px;
-    background-color: white;
+    background-color: var(--secondary-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
 }
 
 .notification-icon:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    background-color: #eef2ff;
 }
 
 .notification-icon svg {
-    color: #182848;
+    color: var(--primary-color);
 }
 
 .notification-badge {
     position: absolute;
     top: -5px;
     right: -5px;
-    background-color: #e74c3c;
+    background-color: var(--error-color);
     color: white;
     border-radius: 50%;
     width: 20px;
@@ -69,10 +69,11 @@
     width: 350px;
     max-height: 450px;
     background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
     overflow: hidden;
     animation: slideIn 0.3s ease;
+    border: 1px solid var(--border-color);
 }
 
 @keyframes slideIn {
@@ -91,30 +92,32 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-    background-color: #182848;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
     color: white;
 }
 
 .notification-header h3 {
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
 }
 
 .mark-all-read {
     background: none;
     border: none;
-    color: #fff;
-    font-size: 12px;
-    text-decoration: underline;
+    color: white;
+    font-size: 13px;
+    opacity: 0.9;
     cursor: pointer;
     padding: 5px;
+    transition: var(--transition);
 }
 
 .mark-all-read:hover {
-    color: #4b6cb7;
+    opacity: 1;
+    text-decoration: underline;
 }
 
 .notification-list {
@@ -124,25 +127,26 @@
 
 .notification-item {
     display: flex;
-    padding: 15px;
-    border-bottom: 1px solid #eee;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: var(--transition);
+    position: relative;
 }
 
 .notification-item:hover {
-    background-color: #f5f7fa;
+    background-color: #f8fafc;
 }
 
 .notification-item.unread {
-    background-color: rgba(75, 108, 183, 0.05);
+    background-color: rgba(58, 108, 244, 0.05);
 }
 
 .notification-item.unread::before {
     content: "";
     width: 8px;
     height: 8px;
-    background-color: #4b6cb7;
+    background-color: var(--primary-color);
     border-radius: 50%;
     position: absolute;
     left: 12px;
@@ -154,6 +158,23 @@
     margin-right: 15px;
     display: flex;
     align-items: center;
+    color: var(--primary-color);
+}
+
+.notification-icon-type.message {
+    color: var(--primary-color);
+}
+
+.notification-icon-type.course {
+    color: var(--success-color);
+}
+
+.notification-icon-type.session {
+    color: var(--warning-color);
+}
+
+.notification-icon-type.payment {
+    color: var(--error-color);
 }
 
 .notification-content {
@@ -162,20 +183,23 @@
 
 .notification-content p {
     margin: 0 0 5px 0;
-    color: #333;
+    color: var(--text-color);
     font-size: 14px;
+    line-height: 1.4;
 }
 
 .notification-time {
     font-size: 12px;
-    color: #777;
+    color: var(--light-text);
+    margin-top: 4px;
 }
 
 .no-notifications {
-    padding: 20px;
+    padding: 30px 20px;
     text-align: center;
-    color: #777;
+    color: var(--light-text);
     font-style: italic;
+    font-size: 14px;
 }
 
 @media (max-width: 480px) {
@@ -185,7 +209,7 @@
     }
 
     .notification-item {
-        padding: 12px;
+        padding: 12px 15px;
     }
 
     .notification-content p {

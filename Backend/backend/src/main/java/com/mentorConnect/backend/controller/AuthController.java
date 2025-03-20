@@ -2,6 +2,9 @@ package com.mentorConnect.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,19 +17,29 @@ import com.mentorConnect.backend.service.AuthService;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class AuthController {
 
     @Autowired
     private AuthService authService;
 
-
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> registerUser(@RequestBody User registerRequest){
+    public ResponseEntity<AuthenticationResponse> registerUser(@RequestBody User registerRequest) {
         return ResponseEntity.ok(authService.register(registerRequest));
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user){
-        return authService.login(user);
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody User user) {
+        return ResponseEntity.ok(authService.login(user));
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getUserProfile() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();
+            return ResponseEntity.ok(authService.getUserByEmail(email));
+        }
+        return ResponseEntity.ok(null);
     }
 }

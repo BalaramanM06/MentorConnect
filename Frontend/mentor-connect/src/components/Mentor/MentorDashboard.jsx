@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { LogOut, Calendar, BookOpen, MessageCircle, Settings, Clock } from "lucide-react";
+import { LogOut, Calendar, BookOpen, MessageCircle, Settings, Clock, Users } from "lucide-react";
 import "./MentorDashboard.css";
 import Courses from "./Courses";
 import Invitation from "./Invitation";
@@ -91,13 +91,13 @@ const MentorDashboard = () => {
       <div className="dashboard-layout">
         <aside className="sidebar">
           <div className="settings-icon" onClick={() => navigate("/setting")}>
-            <Settings size={24} />
+            <Settings size={22} />
           </div>
 
           <div className="profile-section">
             <img src={userProfile?.profilePic || defaultProfile} alt="Profile" className="profile-pic" />
-            <h3>{userProfile?.name || name}</h3>
-            <p>{userProfile?.role || (role ? role.charAt(0).toUpperCase() + role.slice(1) : 'Mentor')}</p>
+            <h3>{userProfile?.name || name || "Mentor Name"}</h3>
+            <p>{userProfile?.specialization || specialization || "Mentor"}</p>
           </div>
 
           <nav className="dashboard-nav-links">
@@ -105,21 +105,21 @@ const MentorDashboard = () => {
               className={activeTab === "upcoming" ? "active" : ""}
               onClick={() => setActiveTab("upcoming")}
             >
-              <Calendar size={20} /> Upcoming Sessions
+              <Calendar size={20} /> <span>Upcoming Sessions</span>
             </button>
 
             <button
               className={activeTab === "schedule-session" ? "active" : ""}
               onClick={() => setActiveTab("schedule-session")}
             >
-              <Clock size={20} /> Schedule Session
+              <Clock size={20} /> <span>Schedule Session</span>
             </button>
 
             <button
               className={activeTab === "students" ? "active" : ""}
               onClick={() => setActiveTab("students")}
             >
-              <MessageCircle size={20} /> Students
+              <Users size={20} /> <span>Students</span>
               {unreadMessages.length > 0 && (
                 <span className="badge">{unreadMessages.length}</span>
               )}
@@ -129,17 +129,29 @@ const MentorDashboard = () => {
               className={activeTab === "courses" ? "active" : ""}
               onClick={() => setActiveTab("courses")}
             >
-              <BookOpen size={20} /> Courses
+              <BookOpen size={20} /> <span>Courses</span>
             </button>
           </nav>
 
           <button className="logout-btn" onClick={handleLogout}>
-            <LogOut size={20} /> Logout
+            <LogOut size={20} /> <span>Logout</span>
           </button>
         </aside>
 
         <main className="dashboard-content">
-          {renderContent()}
+          <div className="dashboard-card">
+            <div className="card-header">
+              <h2>
+                {activeTab === "upcoming" && "Upcoming Sessions"}
+                {activeTab === "schedule-session" && "Schedule a Session"}
+                {activeTab === "students" && "My Students"}
+                {activeTab === "courses" && "Courses"}
+              </h2>
+            </div>
+            <div className="card-content">
+              {renderContent()}
+            </div>
+          </div>
         </main>
       </div>
     </div>
