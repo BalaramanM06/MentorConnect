@@ -19,18 +19,29 @@ export default function Login() {
       .then((response) => {
         console.log("Login successful:", response.data);
 
+        localStorage.setItem('authToken', response.data.token);
+        console.log(response.data.token)
         if (response.data.token) {
-          localStorage.setItem('authToken', response.data.token);
-
-          const role = response.data.role || "student"; 
-
-          if (role === "MENTOR") {
-            navigate('/mentor/dashboard', { state: response.data.user });
-          } else {
-            navigate('/student/dashboard', { state: response.data.user });
-          }
+          api.get("/auth/getRole", {
+            headers: { Authorization: `Bearer ${response.data.token}` }
+          })
+          .then((res) => {
+            const role = res.data.role;
+            console.log(role);
+            if (role === "MENTOR") {
+              navigate('/mentor/dashboard', { state: response.data.user });
+            } else if (role === "MENTEE") {
+              navigate('/student/dashboard', { state: response.data.user });
+            } else {
+              setError("Invalid role received from server.");
+            }
+          })
+          .catch((err) => {
+            console.error("Error fetching role:", err);
+            setError("Failed to fetch user role. Please try again.");
+          });
         } else {
-          setError("Login failed: No authentication token received");
+          setError("Login failed: No authentication token received.");
         }
       })
       .catch((error) => {
