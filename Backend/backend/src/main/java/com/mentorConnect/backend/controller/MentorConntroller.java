@@ -66,6 +66,7 @@ public class MentorConntroller {
     
 
     public String extractEmail(String token) {
+        token = token.substring("Bearer ".length());
         return jwtUtil.extractEmail(token);
     }
 }
