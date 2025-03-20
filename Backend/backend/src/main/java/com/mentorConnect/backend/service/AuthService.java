@@ -1,5 +1,6 @@
 package com.mentorConnect.backend.service;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class AuthService {
         return new AuthenticationResponse(token);
     }
 
-    public ResponseEntity<String> login(User user) {
+    public ResponseEntity<Map<String,String>> login(User user) {
         try {
             // Authenticate the user
             authenticationManager.authenticate(
@@ -52,17 +53,19 @@ public class AuthService {
             User foundUser = userRepo.findByEmail(user.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
     
-            // Validate the role
-            if (!foundUser.getRole().equals(user.getRole())) {
-                return ResponseEntity.status(403).body("Invalid role");
-            }
+            // // Validate the role
+            // if (!foundUser.getRole().equals(user.getRole())) {
+            //     Map<String,String> response = Map.of("message", "Invalid role");
+            //     return ResponseEntity.status(403).body(response);
+            // }
     
             // Generate the token
             String token = jwtUtil.generateAccessToken(foundUser);
-            return ResponseEntity.ok(token);
+            Map<String,String> response = Map.of("token", token);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             System.out.println("Exception: " + e);
-            return ResponseEntity.status(401).body("Authentication failed");
+            return ResponseEntity.status(401).body(Map.of("message", "Authentication failed"));
         }
     }
 
@@ -84,5 +87,15 @@ public class AuthService {
             return user;
         }
         return null;
+    }
+
+    public ResponseEntity<Map<String,String>> getRole(String token) {
+        try {
+            String email = jwtUtil.extractEmail(token.substring("Bearer ".length()));
+            User user = userRepo.findByEmail(email).get();
+            return ResponseEntity.ok(Map.of("role", user.getRole().toString()));
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body(Map.of("message", "Invalid token"));
+        }
     }
 }
