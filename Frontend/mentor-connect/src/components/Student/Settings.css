@@ -1,0 +1,114 @@
+.settings-menu {
+    position: relative;
+    z-index: 1000;
+}
+
+.settings-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    background-color: var(--primary-light, #e6f7ff);
+    color: var(--primary-color, #1890ff);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.settings-icon:hover {
+    background-color: var(--primary-color, #1890ff);
+    color: white;
+    transform: scale(1.05);
+}
+
+.sidebar-top .settings-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: 180px;
+    background-color: var(--card-bg, white);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    border: 1px solid var(--border-color, #eee);
+    animation: settingsPopIn 0.2s ease-out;
+}
+
+@keyframes settingsPopIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Arrow pointing to the settings icon */
+.settings-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 15px;
+    width: 14px;
+    height: 14px;
+    background-color: var(--card-bg, white);
+    border-top: 1px solid var(--border-color, #eee);
+    border-left: 1px solid var(--border-color, #eee);
+    transform: rotate(45deg);
+    z-index: -1;
+}
+
+.settings-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    color: var(--text-primary, #333);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.settings-item:not(:last-child) {
+    border-bottom: 1px solid var(--border-color, #eee);
+}
+
+.settings-item:hover {
+    background-color: var(--secondary-color, #f5f5f5);
+}
+
+.settings-item svg {
+    margin-right: 10px;
+    color: var(--text-secondary, #666);
+}
+
+.settings-item span {
+    font-size: 14px;
+}
+
+@media (max-width: 576px) {
+    .sidebar-top .settings-menu {
+        top: 0.5rem;
+        left: 0.5rem;
+    }
+
+    .settings-icon {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .settings-dropdown {
+        width: 160px;
+    }
+
+    .settings-item {
+        padding: 10px 12px;
+    }
+
+    .settings-item span {
+        font-size: 13px;
+    }
+}

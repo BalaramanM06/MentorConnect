@@ -22,7 +22,7 @@ export default function Login() {
         if (response.data.token) {
           localStorage.setItem('authToken', response.data.token);
 
-          const role = response.data.role || "student"; 
+          const role = response.data.role || "mentee"; 
 
           if (role === "MENTOR") {
             navigate('/mentor/dashboard', { state: response.data.user });

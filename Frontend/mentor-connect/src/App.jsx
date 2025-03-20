@@ -14,13 +14,13 @@ import CreatePost from "./components/CreatePost.jsx";
 import PostDetail from "./components/PostDetail.jsx";
 import Help from "./components/Help.jsx";
 import FindCourses from "./components/Student/FindCourses.jsx";
-import FindingMentor from "./components/Student/FindingMentor.jsx";
 import Payment from "./components/Student/Payment.jsx";
 import Messages from "./components/Student/Messages.jsx";
 import CourseTracker from "./components/Student/CourseTracker.jsx";
 import Setting from "./components/Student/Setting.jsx";
 import Enroll from "./components/Student/Enroll.jsx";
 import StudentResources from "./components/Student/StudentResources.jsx";
+import UpcomingSessions from "./components/Student/UpcomingSessions.jsx";
 
 function App() {
   const [posts, setPosts] = useState(() => {
@@ -108,13 +108,13 @@ function App() {
         <Route path="/mentor/dashboard" element={<MentorDashboard />} />
         <Route path="/student/dashboard" element={<StudentDashboard />} />
         <Route path="/find-courses" element={<FindCourses />} />
-        <Route path="/finding-mentor" element={<FindingMentor />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/course-tracker" element={<CourseTracker />} />
         <Route path="/setting" element={<Setting />} />
         <Route path="/enroll" element={<Enroll />} />
         <Route path="/resources" element={<StudentResources />} />
+        <Route path="upcoming-sessions" element={<UpcomingSessions />} />
       </Routes>
     </Router>
   );

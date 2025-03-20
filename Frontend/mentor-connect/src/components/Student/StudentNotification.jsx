@@ -118,7 +118,7 @@ const StudentNotification = () => {
 
     return (
         <div className="student-notification" ref={dropdownRef}>
-            <div className="notification-icon" onClick={toggleDropdown}>
+            <div className="notification-icon" onClick={toggleDropdown} title="Notifications">
                 <Bell size={24} />
                 {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
             </div>

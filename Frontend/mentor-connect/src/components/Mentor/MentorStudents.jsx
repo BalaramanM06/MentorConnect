@@ -144,7 +144,6 @@ const MentorStudents = () => {
         fetchResources();
     }, [navigate]);
 
-    // Extract email from JWT token
     const extractEmailFromToken = (token) => {
         try {
             const base64Url = token.split('.')[1];
@@ -161,7 +160,6 @@ const MentorStudents = () => {
         }
     };
 
-    // Generate mock students for fallback
     const generateMockStudents = () => {
         return [
             {
@@ -191,7 +189,6 @@ const MentorStudents = () => {
         ];
     };
 
-    // Generate mock resources for fallback
     const generateMockResources = () => {
         return [
             {
@@ -221,7 +218,6 @@ const MentorStudents = () => {
         ];
     };
 
-    // Update filtered students when enrolled students or search term changes
     useEffect(() => {
         if (searchTerm.trim() === "") {
             setFilteredStudents(enrolledStudents);
