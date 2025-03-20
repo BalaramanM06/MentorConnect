@@ -121,6 +121,34 @@
     min-width: 0;
 }
 
+.student-actions {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.chat-button {
+    background: none;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #5663f7;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #f0f2ff;
+    margin-right: 5px;
+}
+
+.chat-button:hover {
+    background-color: #5663f7;
+    color: white;
+    transform: scale(1.1);
+}
+
 .student-header {
     display: flex;
     justify-content: space-between;
@@ -153,9 +181,6 @@
 }
 
 .unread-count {
-    position: absolute;
-    top: 15px;
-    right: 15px;
     min-width: 20px;
     height: 20px;
     background-color: #5663f7;
@@ -411,4 +436,134 @@
 .chat-messages::-webkit-scrollbar-thumb:hover,
 .student-list::-webkit-scrollbar-thumb:hover {
     background: #ccc;
+}
+
+.chat-error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    padding: 20px;
+    color: #666;
+}
+
+.chat-error-container svg {
+    color: #c0c0c0;
+    margin-bottom: 15px;
+}
+
+.chat-error-container h3 {
+    margin: 0 0 10px 0;
+    color: #555;
+}
+
+.chat-error-container p {
+    margin: 0 0 20px 0;
+    color: #888;
+    max-width: 400px;
+}
+
+.retry-btn,
+.fallback-btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 5px;
+}
+
+.retry-btn {
+    background-color: #5663f7;
+    color: white;
+}
+
+.retry-btn:hover {
+    background-color: #4351e8;
+    transform: translateY(-2px);
+}
+
+.fallback-btn {
+    background-color: #f0f0f0;
+    color: #555;
+}
+
+.fallback-btn:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+.error-banner {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 12px 20px;
+    margin: 10px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-banner p {
+    margin: 0;
+    font-weight: 500;
+}
+
+.error-banner button {
+    background: transparent;
+    border: none;
+    color: #c62828;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.error-banner button:hover {
+    background-color: rgba(198, 40, 40, 0.1);
+}
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 40px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #5663f7;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.no-messages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #888;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin: 20px 0;
 }

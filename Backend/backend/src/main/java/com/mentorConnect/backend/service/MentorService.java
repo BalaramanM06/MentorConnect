@@ -53,59 +53,59 @@ public class MentorService {
             String mentorName,
             String courseName,
             String token,
-            String description
-    ) {
+            String description) {
         if (certificate.isEmpty()) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "No certificate file provided"));
         }
         if (token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
-    
+
         // Decode the token to get email
         String email = jwtUtil.extractEmail(token);
 
         try {
             // // Save file temporarily for Tesseract processing
             // Path tempFile = Files.createTempFile("certificate", ".png");
-            // Files.copy(certificate.getInputStream(), tempFile, StandardCopyOption.REPLACE_EXISTING);
-            
+            // Files.copy(certificate.getInputStream(), tempFile,
+            // StandardCopyOption.REPLACE_EXISTING);
+
             // // Extract text from the image
             // String extractedText = extractTextFromImage(tempFile.toFile());
-            
+
             // // Delete the temporary file
             // Files.delete(tempFile);
 
             // Validate extracted text
-            Map<String, Object> validationResult =new HashMap<>();
-            Optional<User> user =userRepo.findByEmail(email);
+            Map<String, Object> validationResult = new HashMap<>();
+            Optional<User> user = userRepo.findByEmail(email);
             if (user.isPresent()) {
                 User u = user.get();
                 Course c = new Course();
                 c.setCourseName(courseName);
                 c.setDescription(description);
                 c.setImage(certificate.getBytes());
-            
+
                 // Save Course first
-                c = courseRepo.save(c);  // Ensure Course gets an ID before referencing it
-            
+                c = courseRepo.save(c); // Ensure Course gets an ID before referencing it
+
                 if (u.getCourses() == null) {
                     u.setCourses(new ArrayList<>());
                 }
                 u.getCourses().add(c);
                 userRepo.save(u); // Save User after updating courses list
-            
+
                 // Create UserAndCourse reference
                 UserAndCourse userAndCourse = new UserAndCourse();
                 userAndCourse.setCourse(c);
                 userAndCourse.setUser(u);
-            
+
                 userAndCourseRepo.save(userAndCourse); // Save UserAndCourse after setting Course
             }
 
             return ResponseEntity.ok(validationResult);
 
-        } catch (IOException  e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.singletonMap("error", "Error processing certificate: " + e.getMessage()));
@@ -116,7 +116,7 @@ public class MentorService {
         Tesseract tesseract = new Tesseract();
         tesseract.setDatapath("/usr/share/tesseract/tessdata");
         tesseract.setLanguage("eng");
- // Use English OCR
+        // Use English OCR
         return tesseract.doOCR(imageFile);
     }
 
@@ -128,9 +128,12 @@ public class MentorService {
         boolean courseFound = fuzzyMatch(text, courseName);
 
         List<String> errors = new ArrayList<>();
-        if (foundDates.isEmpty()) errors.add("No valid date found in certificate.");
-        if (!mentorFound) errors.add("Mentor name not found in certificate.");
-        if (!courseFound) errors.add("Course name not found in certificate.");
+        if (foundDates.isEmpty())
+            errors.add("No valid date found in certificate.");
+        if (!mentorFound)
+            errors.add("Mentor name not found in certificate.");
+        if (!courseFound)
+            errors.add("Course name not found in certificate.");
 
         result.put("status", errors.isEmpty() ? "valid" : "invalid");
         result.put("message", errors.isEmpty() ? "Certificate is valid." : String.join(" ", errors));
@@ -145,10 +148,13 @@ public class MentorService {
         List<Pattern> datePatterns = Arrays.asList(
                 Pattern.compile("\\b\\d{1,2}[/]\\d{1,2}[/]\\d{2,4}\\b"),
                 Pattern.compile("\\b\\d{1,2}-\\d{1,2}-\\d{2,4}\\b"),
-                Pattern.compile("\\b(?:Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)\\s+\\d{1,2},\\s+\\d{4}\\b", Pattern.CASE_INSENSITIVE),
-                Pattern.compile("\\b\\d{1,2}\\s+(?:Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)\\s+\\d{4}\\b", Pattern.CASE_INSENSITIVE),
-                Pattern.compile("\\b\\d{4}-\\d{1,2}-\\d{1,2}\\b")
-        );
+                Pattern.compile(
+                        "\\b(?:Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)\\s+\\d{1,2},\\s+\\d{4}\\b",
+                        Pattern.CASE_INSENSITIVE),
+                Pattern.compile(
+                        "\\b\\d{1,2}\\s+(?:Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)\\s+\\d{4}\\b",
+                        Pattern.CASE_INSENSITIVE),
+                Pattern.compile("\\b\\d{4}-\\d{1,2}-\\d{1,2}\\b"));
 
         for (Pattern pattern : datePatterns) {
             Matcher matcher = pattern.matcher(text);
@@ -192,11 +198,11 @@ public class MentorService {
 
     public List<UserAndCourse> getAllPastUser(String email) {
         OldAndNewMentee oldAndNewMentee = oldAndNewMenteeRepo.findByMentorEmail(email);
-        if(oldAndNewMentee==null){
+        if (oldAndNewMentee == null) {
             return new ArrayList<>();
         }
         List<UserAndCourse> oldMentee = oldAndNewMentee.getOldMentee();
-        if(oldMentee.isEmpty()){
+        if (oldMentee.isEmpty()) {
             return new ArrayList<>();
         }
         return oldMentee;
@@ -204,11 +210,11 @@ public class MentorService {
 
     public List<UserAndCourse> getAllCurrUser(String email) {
         OldAndNewMentee oldAndNewMentee = oldAndNewMenteeRepo.findByMentorEmail(email);
-        if(oldAndNewMentee==null){
+        if (oldAndNewMentee == null) {
             return new ArrayList<>();
         }
         List<UserAndCourse> newMentee = oldAndNewMentee.getNewMentee();
-        if(newMentee.isEmpty()){
+        if (newMentee.isEmpty()) {
             return new ArrayList<>();
         }
         return newMentee;
@@ -218,15 +224,15 @@ public class MentorService {
         return oldAndNewMenteeRepo.findByMentorEmail(email);
     }
 
-    public ResponseEntity<?> addMentee(String mentorEmail, String menteeEmail,Course course) {
+    public ResponseEntity<?> addMentee(String mentorEmail, String menteeEmail, Course course) {
         Optional<User> mentor = userRepo.findByEmail(mentorEmail);
         Optional<User> mentee = userRepo.findByEmail(menteeEmail);
-        if(mentor.isEmpty() || mentee.isEmpty()){
+        if (mentor.isEmpty() || mentee.isEmpty()) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentor or Mentee not found"));
         }
         User n = mentee.get();
         OldAndNewMentee oldAndNewMentee = oldAndNewMenteeRepo.findByMentorEmail(mentorEmail);
-        if(oldAndNewMentee==null){
+        if (oldAndNewMentee == null) {
             oldAndNewMentee = new OldAndNewMentee();
             oldAndNewMentee.setMentorEmail(mentorEmail);
         }
@@ -240,46 +246,46 @@ public class MentorService {
         return ResponseEntity.ok(Collections.singletonMap("message", "Mentee added successfully"));
     }
 
-    public ResponseEntity<?> removeAndToPast(String mentorEmail,String menteeEmail,String courseName){
+    public ResponseEntity<?> removeAndToPast(String mentorEmail, String menteeEmail, String courseName) {
         Optional<User> mentor = userRepo.findByEmail(mentorEmail);
         Optional<User> mentee = userRepo.findByEmail(menteeEmail);
-        if(mentor.isEmpty() || mentee.isEmpty()){
+        if (mentor.isEmpty() || mentee.isEmpty()) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentor or Mentee not found"));
         }
         OldAndNewMentee oldAndNewMentee = oldAndNewMenteeRepo.findByMentorEmail(mentorEmail);
         OldAndNewCourse oldAndNewCourse = oldAndNewCourseRepo.findByMenteeEmail(menteeEmail);
 
-        if(oldAndNewMentee==null || oldAndNewCourse == null){
+        if (oldAndNewMentee == null || oldAndNewCourse == null) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentor not found"));
         }
         UserAndCourse userAndCourse = new UserAndCourse();
         UserAndCourse userAndCourse1 = new UserAndCourse();
         List<UserAndCourse> newMentee = oldAndNewMentee.getNewMentee();
         List<UserAndCourse> newCourse = oldAndNewCourse.getNewCourse();
-        for(UserAndCourse uac: newMentee){
-            if(uac.getUser().getEmail().equals(menteeEmail) && uac.getCourse().getCourseName().equals(courseName)){
+        for (UserAndCourse uac : newMentee) {
+            if (uac.getUser().getEmail().equals(menteeEmail) && uac.getCourse().getCourseName().equals(courseName)) {
                 newMentee.remove(uac);
-                userAndCourse=uac;  
+                userAndCourse = uac;
                 break;
             }
         }
-        for(UserAndCourse uac: newCourse){
-            if(uac.getUser().getEmail().equals(mentorEmail) && uac.getCourse().getCourseName().equals(courseName)){
+        for (UserAndCourse uac : newCourse) {
+            if (uac.getUser().getEmail().equals(mentorEmail) && uac.getCourse().getCourseName().equals(courseName)) {
                 newCourse.remove(uac);
-                userAndCourse1=uac;  
+                userAndCourse1 = uac;
                 break;
             }
         }
 
-        if(userAndCourse.getUser()==null || userAndCourse1.getUser()==null){
+        if (userAndCourse.getUser() == null || userAndCourse1.getUser() == null) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentee not found"));
         }
-        List<UserAndCourse> oldCourse=oldAndNewCourse.getOldCourse();
+        List<UserAndCourse> oldCourse = oldAndNewCourse.getOldCourse();
         oldCourse.add(userAndCourse1);
         oldAndNewCourse.setOldCourse(oldCourse);
         oldAndNewCourse.setNewCourse(newCourse);
         oldAndNewCourseRepo.save(oldAndNewCourse);
-        List<UserAndCourse> oldMentee=oldAndNewMentee.getOldMentee();
+        List<UserAndCourse> oldMentee = oldAndNewMentee.getOldMentee();
         oldMentee.add(userAndCourse);
         oldAndNewMentee.setOldMentee(oldMentee);
         oldAndNewMentee.setNewMentee(newMentee);
@@ -287,26 +293,26 @@ public class MentorService {
         return ResponseEntity.ok(Collections.singletonMap("message", "Mentee moved to past successfully"));
     }
 
-    public ResponseEntity<?> removeFromPast(String mentorEmail,String menteeEmail,String courseName){
+    public ResponseEntity<?> removeFromPast(String mentorEmail, String menteeEmail, String courseName) {
         Optional<User> mentor = userRepo.findByEmail(mentorEmail);
         Optional<User> mentee = userRepo.findByEmail(menteeEmail);
-        if(mentor.isEmpty() || mentee.isEmpty()){
+        if (mentor.isEmpty() || mentee.isEmpty()) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentor or Mentee not found"));
         }
         OldAndNewMentee oldAndNewMentee = oldAndNewMenteeRepo.findByMentorEmail(mentorEmail);
-        if(oldAndNewMentee==null){
+        if (oldAndNewMentee == null) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentor not found"));
         }
         UserAndCourse userAndCourse = new UserAndCourse();
         List<UserAndCourse> oldMentee = oldAndNewMentee.getOldMentee();
-        for(UserAndCourse uac: oldMentee){
-            if(uac.getUser().getEmail().equals(menteeEmail) && uac.getCourse().getCourseName().equals(courseName)){
+        for (UserAndCourse uac : oldMentee) {
+            if (uac.getUser().getEmail().equals(menteeEmail) && uac.getCourse().getCourseName().equals(courseName)) {
                 oldMentee.remove(uac);
-                userAndCourse=uac;  
+                userAndCourse = uac;
                 break;
             }
         }
-        if(userAndCourse.getUser()==null){
+        if (userAndCourse.getUser() == null) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentee not found"));
         }
         oldAndNewMentee.setOldMentee(oldMentee);
@@ -314,43 +320,43 @@ public class MentorService {
         return ResponseEntity.ok(Collections.singletonMap("message", "Mentee removed from past successfully"));
     }
 
-    public ResponseEntity<?> handleCourseRequest(String mentorEmail,String menteeEmail,String courseName,String status){
+    public ResponseEntity<?> handleCourseRequest(String mentorEmail, String menteeEmail, String courseName,
+            String status) {
         Optional<User> mentor = userRepo.findByEmail(mentorEmail);
         Optional<User> mentee = userRepo.findByEmail(menteeEmail);
-        if(mentor.isEmpty() || mentee.isEmpty()){
+        if (mentor.isEmpty() || mentee.isEmpty()) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentor or Mentee not found"));
         }
         OldAndNewMentee oldAndNewMentee = oldAndNewMenteeRepo.findByMentorEmail(mentorEmail);
         OldAndNewCourse oldAndNewCourse = oldAndNewCourseRepo.findByMenteeEmail(menteeEmail);
 
-
-        if(oldAndNewMentee==null || oldAndNewCourse == null){
+        if (oldAndNewMentee == null || oldAndNewCourse == null) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentor not found"));
         }
         UserAndCourse userAndCourse = new UserAndCourse();
-        UserAndCourse userAndCourse2=new UserAndCourse();
+        UserAndCourse userAndCourse2 = new UserAndCourse();
         List<UserAndCourse> pendingRequest = oldAndNewMentee.getPendingRequest();
-        List<UserAndCourse> pendingRequest2=oldAndNewCourse.getPendingRequest();
-        for(UserAndCourse uac: pendingRequest){
-            if(uac.getUser().getEmail().equals(menteeEmail) && uac.getCourse().getCourseName().equals(courseName)){
+        List<UserAndCourse> pendingRequest2 = oldAndNewCourse.getPendingRequest();
+        for (UserAndCourse uac : pendingRequest) {
+            if (uac.getUser().getEmail().equals(menteeEmail) && uac.getCourse().getCourseName().equals(courseName)) {
                 pendingRequest.remove(uac);
-                userAndCourse=uac;  
+                userAndCourse = uac;
                 break;
             }
         }
-        for(UserAndCourse uac:pendingRequest2){
-            if(uac.getUser().getEmail().equals(mentorEmail) && uac.getCourse().getCourseName().equals(courseName)){
+        for (UserAndCourse uac : pendingRequest2) {
+            if (uac.getUser().getEmail().equals(mentorEmail) && uac.getCourse().getCourseName().equals(courseName)) {
                 pendingRequest2.remove(uac);
-                userAndCourse2=uac;  
+                userAndCourse2 = uac;
                 break;
             }
         }
-        if(userAndCourse.getUser()==null || userAndCourse2.getUser() == null){
+        if (userAndCourse.getUser() == null || userAndCourse2.getUser() == null) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Mentee not found"));
         }
         List<UserAndCourse> newMentee = oldAndNewMentee.getNewMentee();
-        List<UserAndCourse> newCourse=oldAndNewCourse.getNewCourse();
-        if(status.equals("accept")){
+        List<UserAndCourse> newCourse = oldAndNewCourse.getNewCourse();
+        if (status.equals("accept")) {
             newMentee.add(userAndCourse);
             newCourse.add(userAndCourse2);
         }
@@ -365,43 +371,43 @@ public class MentorService {
 
     public List<UserAndCourse> getAllPendingRequest(String email) {
         OldAndNewMentee oldAndNewMentee = oldAndNewMenteeRepo.findByMentorEmail(email);
-        if(oldAndNewMentee==null){
+        if (oldAndNewMentee == null) {
             return new ArrayList<>();
         }
         List<UserAndCourse> pendingRequest = oldAndNewMentee.getPendingRequest();
-        if(pendingRequest.isEmpty()){
+        if (pendingRequest.isEmpty()) {
             return new ArrayList<>();
         }
         return pendingRequest;
     }
 
-    public ResponseEntity<?> addFreeTime(List<Date> date,String email){
+    public ResponseEntity<?> addFreeTime(List<Date> date, String email) {
         Optional<User> user = userRepo.findByEmail(email);
-        User u=null;
-        if(user.isPresent()){
-            u=user.get();
-        }else{
-            return ResponseEntity.badRequest().body(Collections.singletonMap("error","Email not Exist"));
+        User u = null;
+        if (user.isPresent()) {
+            u = user.get();
+        } else {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Email not Exist"));
         }
         Set<Date> set = u.getFreetime();
         set.addAll(date);
         u.setFreetime(set);
         userRepo.save(u);
-        return ResponseEntity.ok(Collections.singletonMap("message", "Free Time Added successfully")); 
+        return ResponseEntity.ok(Collections.singletonMap("message", "Free Time Added successfully"));
     }
 
-    public ResponseEntity<?> deleteFreeTime(List<Date> date,String email){
+    public ResponseEntity<?> deleteFreeTime(List<Date> date, String email) {
         Optional<User> user = userRepo.findByEmail(email);
-        User u=null;
-        if(user.isPresent()){
-            u=user.get();
-        }else{
-            return ResponseEntity.badRequest().body(Collections.singletonMap("error","Email not Exist"));
+        User u = null;
+        if (user.isPresent()) {
+            u = user.get();
+        } else {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Email not Exist"));
         }
         Set<Date> set = u.getFreetime();
         set.removeAll(date);
         u.setFreetime(set);
         userRepo.save(u);
-        return ResponseEntity.ok(Collections.singletonMap("message", "Free Time Added successfully")); 
+        return ResponseEntity.ok(Collections.singletonMap("message", "Free Time Added successfully"));
     }
 }

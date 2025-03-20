@@ -126,6 +126,22 @@
     font-weight: 600;
 }
 
+/* Badge for unread messages */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background-color: #e53935;
+    color: white;
+    font-size: 0.8em;
+    font-weight: 600;
+    border-radius: 10px;
+    margin-left: auto;
+}
+
 .dashboard-nav-links button svg {
     color: #777;
 }

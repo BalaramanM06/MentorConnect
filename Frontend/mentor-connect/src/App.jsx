@@ -13,7 +13,6 @@ import Forum from "./components/Forum.jsx";
 import CreatePost from "./components/CreatePost.jsx";
 import PostDetail from "./components/PostDetail.jsx";
 import Help from "./components/Help.jsx";
-import SignUpStep2 from "./components/SignUpStep2.jsx";
 import FindCourses from "./components/Student/FindCourses.jsx";
 import FindingMentor from "./components/Student/FindingMentor.jsx";
 import Payment from "./components/Student/Payment.jsx";
@@ -21,7 +20,6 @@ import Messages from "./components/Student/Messages.jsx";
 import CourseTracker from "./components/Student/CourseTracker.jsx";
 import Setting from "./components/Student/Setting.jsx";
 import Enroll from "./components/Student/Enroll.jsx";
-import StudentScheduling from "./components/Student/StudentScheduling.jsx";
 import StudentResources from "./components/Student/StudentResources.jsx";
 
 function App() {
@@ -107,9 +105,8 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/signup-step2" element={<SignUpStep2 />} role={role} />
-        <Route path="/mentor-dashboard" element={<MentorDashboard />} />
-        <Route path="/student-dashboard" element={<StudentDashboard />} />
+        <Route path="/mentor/dashboard" element={<MentorDashboard />} />
+        <Route path="/student/dashboard" element={<StudentDashboard />} />
         <Route path="/find-courses" element={<FindCourses />} />
         <Route path="/finding-mentor" element={<FindingMentor />} />
         <Route path="/payment" element={<Payment />} />
@@ -117,7 +114,6 @@ function App() {
         <Route path="/course-tracker" element={<CourseTracker />} />
         <Route path="/setting" element={<Setting />} />
         <Route path="/enroll" element={<Enroll />} />
-        <Route path="/scheduling" element={<StudentScheduling />} />
         <Route path="/resources" element={<StudentResources />} />
       </Routes>
     </Router>

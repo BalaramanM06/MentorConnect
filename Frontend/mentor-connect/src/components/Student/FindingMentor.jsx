@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./FindingMentor.css";
-import { Search, Filter, Star, MessageCircle, User, Calendar, Award, Book, Briefcase, Clock } from "lucide-react";
+import { Search, Filter, Star, MessageCircle, Award, Book, Briefcase, Clock } from "lucide-react";
 import defaultAvatar from "../../assets/default-profile.jpeg";
 
 const FindingMentor = () => {
@@ -155,15 +155,6 @@ const FindingMentor = () => {
     }
   };
 
-  // Handle scheduling with mentor
-  const handleScheduleMeeting = (mentor) => {
-    navigate("/scheduling", {
-      state: {
-        mentor: mentor
-      }
-    });
-  };
-
   return (
     <div className="mentors-container">
       <header className="mentors-header">
@@ -245,29 +236,12 @@ const FindingMentor = () => {
                 >
                   <MessageCircle size={18} /> Chat with Mentor
                 </button>
-                <button 
-                  className="schedule-btn"
-                  onClick={() => handleScheduleMeeting(mentor)}
-                >
-                  <Calendar size={18} /> Schedule Meeting
-                </button>
               </div>
             </div>
           ))
         ) : (
-          <p className="no-mentors">No mentors found.</p>
+          <p className="no-mentors">No mentors match your search criteria.</p>
         )}
-      </div>
-
-      {/* Floating Calendar Icon */}
-      <div className="floating-calendar">
-        <button
-          className="calendar-button"
-          onClick={() => navigate("/scheduling")}
-          title="Schedule a session"
-        >
-          <Calendar size={30} />
-        </button>
       </div>
     </div>
   );

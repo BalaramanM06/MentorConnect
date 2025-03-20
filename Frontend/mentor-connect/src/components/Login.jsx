@@ -1,35 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./Login.css";
-import GoogleIcon from "../assets/Google-icon.png"
-import MicrosoftIcon from "../assets/Microsoft-icon.png";
-import LinkedinIcon from "../assets/LinkedIn-icon.png";
-
-// Since Firebase is not yet installed, I'm creating a mock authentication service
-// that simulates the behavior - in a real implementation, you would use Firebase here
-const mockAuthService = {
-  // Simulates checking if a user exists
-  checkUserExists: (email) => {
-    // In a real implementation, this would check your database
-    // For this mock, we'll assume users with gmail.com are registered
-    return email.includes("gmail.com");
-  },
-
-  // Simulate Google sign-in
-  signInWithGoogle: () => {
-    return new Promise((resolve) => {
-      // Simulate API delay
-      setTimeout(() => {
-        // Mock user data that would come from Google
-        resolve({
-          email: "user@gmail.com",
-          displayName: "Demo User",
-          // In a real implementation, this would be the actual user data from Google
-        });
-      }, 1000);
-    });
-  }
-};
+import api from "../utils/axiosConfig";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -43,38 +15,33 @@ export default function Login() {
     setLoading(true);
     setError("");
 
-    try {
-      console.log("Logging in with", email, password);
-      if (mockAuthService.checkUserExists(email)) {
-        navigate('/dashboard');
-      } else {
-        setError("User not found. Please sign up first.");
-      }
-    } catch (error) {
-      setError("Login failed. Please try again.");
-      console.error("Login error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    api.post("/auth/login", { email, password })
+      .then((response) => {
+        console.log("Login successful:", response.data);
 
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    setError("");
+        // Save JWT token to localStorage
+        if (response.data.token) {
+          localStorage.setItem('authToken', response.data.token);
 
-    try {
-      const userData = await mockAuthService.signInWithGoogle();
-      if (mockAuthService.checkUserExists(userData.email)) {
-        navigate('/dashboard');
-      } else {
-        navigate('/signup', { state: { email: userData.email, name: userData.displayName } });
-      }
-    } catch (error) {
-      setError("Google login failed. Please try again.");
-      console.error("Google login error:", error);
-    } finally {
-      setLoading(false);
-    }
+          // Determine which dashboard to navigate to based on user role
+          const role = response.data.role || "student"; // Default to student if role not specified
+
+          if (role === "mentor") {
+            navigate('/mentor/dashboard', { state: response.data.user });
+          } else {
+            navigate('/student/dashboard', { state: response.data.user });
+          }
+        } else {
+          setError("Login failed: No authentication token received");
+        }
+      })
+      .catch((error) => {
+        console.error("Login error:", error);
+        setError(error.response?.data?.message || "Login failed. Please check your credentials.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -102,18 +69,6 @@ export default function Login() {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-        <p className="divider">OR</p>
-        <div className="social-login">
-          <button className="google-btn" onClick={handleGoogleLogin} disabled={loading}>
-            <img src={GoogleIcon} alt="Login by Google" className="Login-Google-Logo" />
-          </button>
-          <button className="microsoft-btn" disabled={loading}>
-            <img src={MicrosoftIcon} alt="Login by Microsoft" className="Login-Microsoft-Logo" />
-          </button>
-          <button className="linkedin-btn" disabled={loading}>
-            <img src={LinkedinIcon} alt="Login by LinkedIn" className="Login-Linkedin-Logo" />
-          </button>
-        </div>
         <p>Don't have an account? <span className="signup-link" style={{ color: 'blue' }} onClick={() => navigate('/signup')}>Sign Up</span></p>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./SignUp.css";
+import api from '../utils/axiosConfig';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const SignUp = () => {
     isOAuthSignup: false,
   });
 
+  const [registrationError, setRegistrationError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -39,19 +41,58 @@ const SignUp = () => {
 
     if (!formData.isOAuthSignup) {
       if (formData.password !== formData.confirmPassword) {
-        const invalidSpan = document.querySelector(".invalid-span");
-        invalidSpan.textContent = "Passwords do not match!";
+        setRegistrationError("Passwords do not match!");
         return;
       }
     }
 
     if (!formData.role) {
-      const invalidSpan = document.querySelector(".invalid-span");
-      invalidSpan.textContent = "Please select a role (Mentor or Student).";
+      setRegistrationError("Please select a role (Mentor or Student).");
       return;
     }
 
-    navigate("/signup-step2", { state: { name: formData.fullName, role: formData.role } });
+    // Prepare data for registration
+    const registrationData = {
+      name: formData.fullName,
+      email: formData.email,
+      password: formData.password,
+      role: formData.role,
+    };
+
+    // Submit registration
+    api.post("/auth/register", registrationData)
+      .then((response) => {
+        console.log("Registration successful:", response);
+        // Log the full response structure
+        console.log("Full response structure:", JSON.stringify(response.data));
+
+        // Save JWT token to localStorage
+        if (response.data.token) {
+          localStorage.setItem('authToken', response.data.token);
+
+          // Create a user object with basic fields since the backend might not provide a complete user object
+          const userObj = {
+            name: formData.fullName,
+            email: formData.email,
+            role: formData.role
+          };
+
+          // Navigate to appropriate dashboard based on role
+          if (formData.role === "mentor") {
+            console.log("Navigating to mentor dashboard with user data:", userObj);
+            navigate('/mentor/dashboard', { state: response.data.user || userObj });
+          } else {
+            console.log("Navigating to student dashboard with user data:", userObj);
+            navigate('/student/dashboard', { state: response.data.user || userObj });
+          }
+        } else {
+          setRegistrationError("Registration failed: No authentication token received");
+        }
+      })
+      .catch((error) => {
+        console.error("Registration error:", error);
+        setRegistrationError(error.response?.data?.message || "Registration failed. Please try again.");
+      });
   };
 
   return (
@@ -66,7 +107,11 @@ const SignUp = () => {
         <p style={{ color: '#666', fontSize: '14px', fontFamily: 'sans-serif', margin: '10px 0 20px' }}>
           Join MentorConnect and start your journey to success
         </p>
-        <div className="invalid-span" style={{ color: 'red', fontSize: '14px', fontWeight: 'bold', minHeight: '20px' }}></div>
+        {registrationError && (
+          <div className="error-message" style={{ color: 'red', fontSize: '14px', fontWeight: 'bold', minHeight: '20px' }}>
+            {registrationError}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -126,7 +171,7 @@ const SignUp = () => {
             </select>
           </div>
 
-          <button type="submit">Continue</button>
+          <button type="submit">Sign Up</button>
           <p style={{ marginTop: '20px' }}>
             Already have an account? <span className="login-link" onClick={() => navigate('/login')}>Login</span>
           </p>

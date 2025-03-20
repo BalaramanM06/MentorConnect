@@ -13,7 +13,7 @@ const Setting = () => {
             console.log('Profile photo updated to:', file.name);
             alert('Profile photo updated successfully!');
             setTimeout(() => {
-                navigate('/student-dashboard');
+                navigate('/student/dashboard');
             }, 1000);
         }
     };
