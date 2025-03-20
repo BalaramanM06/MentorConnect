@@ -42,15 +42,29 @@ public class AuthService {
         return new AuthenticationResponse(token);
     }
 
-    public ResponseEntity<String> login(User user){
-        try{
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+    public ResponseEntity<String> login(User user) {
+        try {
+            // Authenticate the user
+            authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+            );
+    
+            // Retrieve the user from the repository
+            User foundUser = userRepo.findByEmail(user.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    
+            // Validate the role
+            if (!foundUser.getRole().equals(user.getRole())) {
+                return ResponseEntity.status(403).body("Invalid role");
+            }
+    
+            // Generate the token
+            String token = jwtUtil.generateAccessToken(foundUser);
+            return ResponseEntity.ok(token);
         } catch (Exception e) {
-            System.out.println("Exception: "+e);
-
+            System.out.println("Exception: " + e);
+            return ResponseEntity.status(401).body("Authentication failed");
         }
-        String token =jwtUtil.generateAccessToken(user);
-        return ResponseEntity.ok(token);
     }
 
     public AuthenticationResponse authenticate(User request){
