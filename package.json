@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@jitsi/react-sdk": "^1.4.4",
     "lucide-react": "^0.479.0",
     "tailwind": "^4.0.0"
   }

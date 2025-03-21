@@ -201,9 +201,6 @@ const StudentDashboard = () => {
     <div className="student-dashboard">
       <div className="dashboard-sidebar">
         <div className="sidebar-top">
-            <li onClick={() => navigate('/')}>
-              <SettingsMenu size={20} />
-            </li>
           <div className="sidebar-profile">
             <img src={user?.profilePic || defaultProfile} alt="Profile" />
             <div className="profile-info">

@@ -156,9 +156,7 @@ const UpcomingSession = () => {
         // This would integrate with a video platform API like Zoom, Google Meet, etc.
         // For now we'll just close the dialog
         setShowMeetingDialog(false);
-
-        // In a real app, this might launch the video platform
-        alert(`Meeting with ${selectedSession.studentName} started!`);
+        navigate(`/mentor/join-meeting/${selectedSession.studentName}`);
     };
 
     // Calculate relative time display

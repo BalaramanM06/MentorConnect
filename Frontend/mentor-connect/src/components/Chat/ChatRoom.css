@@ -5,7 +5,6 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px;
 }
 
 /* Chat Sidebar */
@@ -173,7 +172,6 @@
     padding: 20px;
     text-align: center;
     color: #6c757d;
-    background-color: #f8f9fa;
 }
 
 .no-chat-icon {

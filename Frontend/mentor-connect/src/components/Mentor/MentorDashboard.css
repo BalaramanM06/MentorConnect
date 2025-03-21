@@ -15,7 +15,6 @@
     --warning-color: #f39c12;
 }
 
-/* Main Dashboard Layout */
 .mentor-dashboard-container {
     display: flex;
     flex-direction: column;
@@ -83,11 +82,9 @@
     justify-content: center;
     border-radius: 50%;
     transition: var(--transition);
-    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .settings-icon:hover {
-    background-color: rgba(255, 255, 255, 0.2);
     transform: rotate(15deg);
 }
 
@@ -211,7 +208,6 @@
     color: #ff6b6b;
 }
 
-/* Main Content Area */
 .dashboard-content {
     flex: 1;
     overflow-y: auto;
@@ -219,7 +215,6 @@
     background-color: #f8fafc;
 }
 
-/* Scrollbar styling */
 .dashboard-content::-webkit-scrollbar {
     width: 8px;
 }

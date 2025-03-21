@@ -1,552 +1,435 @@
 .schedule-session-container {
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    padding: 20px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    width: 100%;
-}
-
-.schedule-session-container h2 {
-    margin: 0 0 5px 0;
-    color: #333;
-}
-
-.subtitle {
-    color: #666;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-}
-
-.confirmation-message {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    padding: 12px 16px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    font-weight: 500;
-}
-
-.confirmation-message svg {
-    color: #2e7d32;
-}
-
-/* Form Styles */
-.schedule-form {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: 1fr;
+    /* Single column layout for mobile */
     gap: 20px;
-}
-
-.form-column {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.form-group {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: var(--card-shadow);
-    overflow: hidden;
-    border: 1px solid var(--border-color);
-    transition: var(--transition);
-}
-
-.form-group:hover {
-    box-shadow: var(--hover-shadow);
-}
-
-.form-group-header {
-    padding: 15px 20px;
-    background-color: var(--secondary-color);
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.form-group-header h3 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1e293b;
-}
-
-.form-group-header svg {
-    color: var(--primary-color);
-}
-
-.form-group-content {
+    /* Space between grid items */
     padding: 20px;
-}
-
-/* Dropdown styles */
-.dropdown-select {
-    position: relative;
-    width: 100%;
-}
-
-.dropdown-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 15px;
-    border: 1px solid var(--border-color);
+    /* Padding around the container */
+    background-color: #f4f7fa;
+    /* Light background for the container */
     border-radius: 8px;
-    background-color: white;
-    cursor: pointer;
-    transition: var(--transition);
+    /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
 }
 
-.dropdown-header:hover {
-    border-color: #94a3b8;
+@media (min-width: 768px) {
+    .schedule-session-container {
+        grid-template-columns: repeat(2, 1fr);
+        /* Two columns for larger screens */
+    }
 }
 
-.dropdown-header.active {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(45, 92, 184, 0.1);
-}
-
-.dropdown-selected {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.dropdown-selected svg {
-    color: #94a3b8;
-}
-
-.dropdown-selected .text {
-    font-size: 0.95rem;
-    color: #1e293b;
-}
-
-.dropdown-selected .placeholder {
-    color: #94a3b8;
-}
-
-.dropdown-chevron {
-    transition: transform 0.2s ease;
-}
-
-.dropdown-header.active .dropdown-chevron {
-    transform: rotate(180deg);
-}
-
-.dropdown-menu {
-    position: absolute;
-    top: calc(100% + 5px);
-    left: 0;
-    width: 100%;
-    background-color: white;
+.session-card {
+    background-color: #ffffff;
+    /* White background for cards */
     border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    max-height: 250px;
-    overflow-y: auto;
-    border: 1px solid var(--border-color);
+    /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+    padding: 20px;
+    /* Padding inside each card */
+    transition: transform 0.2s;
+    /* Smooth transition for hover effect */
 }
 
-.dropdown-search {
-    padding: 10px;
-    border-bottom: 1px solid var(--border-color);
-    position: sticky;
-    top: 0;
-    background-color: white;
-    z-index: 1;
+.session-card:hover {
+    transform: translateY(-5px);
+    /* Lift effect on hover */
 }
 
-.dropdown-search input {
-    width: 100%;
-    padding: 8px 15px 8px 35px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    font-size: 0.9rem;
-    transition: var(--transition);
+.session-title {
+    font-size: 1.5rem;
+    /* Larger font for titles */
+    margin-bottom: 10px;
+    /* Space below title */
+    color: #34495e;
+    /* Darker color for better contrast */
 }
 
-.dropdown-search input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(45, 92, 184, 0.1);
+.session-details {
+    font-size: 1rem;
+    /* Standard font size for details */
+    color: #555;
+    /* Dark gray color for text */
+    margin-bottom: 15px;
+    /* Space below details */
 }
 
-.dropdown-search svg {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #94a3b8;
-    pointer-events: none;
-}
-
-.dropdown-items {
-    padding: 5px 0;
-}
-
-.dropdown-item {
-    padding: 10px 15px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: var(--transition);
-}
-
-.dropdown-item:hover {
-    background-color: var(--secondary-color);
-}
-
-.dropdown-item.selected {
-    background-color: rgba(45, 92, 184, 0.1);
-    color: var(--primary-color);
-}
-
-.dropdown-item.today {
-    color: var(--primary-color);
-    font-weight: 500;
-}
-
-.course-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    background-color: rgba(45, 92, 184, 0.1);
-    color: var(--primary-color);
-    flex-shrink: 0;
-}
-
-.student-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    background-color: #e2e8f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-}
-
-.dropdown-item-details {
-    flex: 1;
-    min-width: 0;
-}
-
-.dropdown-item-title {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: #1e293b;
-    margin: 0 0 3px 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.dropdown-item-subtitle {
-    font-size: 0.85rem;
-    color: #64748b;
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.dropdown-empty {
-    padding: 15px;
-    text-align: center;
-    color: #64748b;
-}
-
-/* Time Slots */
-.time-slots-container {
+.time-slots-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    /* Responsive grid for time slots */
+    gap: 15px;
+    /* Space between time slots */
 }
 
 .time-slot {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
-    border: 1px solid var(--border-color);
+    padding: 12px;
+    border: 1px solid #ddd;
+    /* Light border */
     border-radius: 8px;
-    background-color: white;
-    transition: var(--transition);
+    /* Rounded corners */
+    background-color: #ffffff;
+    /* White background */
+    transition: all 0.3s;
+    /* Smooth transition */
+    cursor: pointer;
+    /* Pointer cursor */
+    font-size: 0.9rem;
+    /* Standard font size */
+}
+
+.time-slot:hover {
+    border-color: #5663f7;
+    /* Change border color on hover */
+    background-color: #f0f4ff;
+    /* Light blue background on hover */
+}
+
+.time-slot.selected {
+    background-color: #e0e7ff;
+    /* Light blue background for selected */
+    border-color: #5663f7;
+    /* Change border color for selected */
+    font-weight: 500;
+    /* Bold text for selected */
+}
+
+/* Schedule button */
+.schedule-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px;
+    background-color: #5663f7;
+    /* Primary button color */
+    color: white;
+    /* Button text color */
+    font-weight: 500;
+    border: none;
+    /* Remove border */
+    border-radius: 6px;
+    /* Rounded button corners */
+    cursor: pointer;
+    /* Pointer cursor */
+    transition: background-color 0.3s, transform 0.2s;
+    /* Smooth transition */
+}
+
+.schedule-button:hover:not(:disabled) {
+    background-color: #4552e5;
+    /* Darker shade on hover */
+    transform: translateY(-2px);
+    /* Lift effect on hover */
+}
+
+.schedule-button:disabled {
+    background-color: #ccc;
+    /* Disabled button color */
+    cursor: not-allowed;
+    /* Not allowed cursor */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .time-slots-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* Two columns on smaller screens */
+    }
+}
+
+/* General styles for form groups */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    /* Space between form groups */
+}
+
+/* Label styles */
+.form-group label {
+    font-size: 1rem;
+    /* Standard font size for labels */
+    color: #34495e;
+    /* Darker color for better contrast */
+    margin-bottom: 5px;
+    /* Space below label */
+}
+
+/* Dropdown container styles */
+.dropdown-container {
+    position: relative;
+    /* Position relative for dropdown */
+}
+
+/* Dropdown header styles */
+.dropdown-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    /* Padding for dropdown header */
+    border: 1px solid #ddd;
+    /* Light border */
+    border-radius: 8px;
+    /* Rounded corners */
+    background-color: #ffffff;
+    /* White background */
+    cursor: pointer;
+    /* Pointer cursor */
+    transition: border-color 0.3s;
+    /* Smooth transition for border color */
+}
+
+.dropdown-header:hover {
+    border-color: #5663f7;
+    /* Change border color on hover */
+}
+
+/* Selected option styles */
+.selected-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Space between icon and text */
+}
+
+/* Dropdown menu styles */
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    /* Position below the header */
+    left: 0;
+    width: 100%;
+    /* Full width */
+    background-color: #ffffff;
+    /* White background */
+    border-radius: 8px;
+    /* Rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    /* Shadow for dropdown */
+    z-index: 10;
+    /* Ensure it appears above other content */
+}
+
+/* Dropdown option styles */
+.dropdown-option {
+    padding: 12px 15px;
+    /* Padding for options */
+    cursor: pointer;
+    /* Pointer cursor */
+    transition: background-color 0.3s;
+    /* Smooth transition for hover */
+}
+
+.dropdown-option:hover {
+    background-color: #f0f4ff;
+    /* Light blue background on hover */
+}
+
+/* Input field styles */
+input[type="text"],
+select {
+    padding: 12px;
+    /* Padding for input fields */
+    border: 1px solid #ddd;
+    /* Light border */
+    border-radius: 8px;
+    /* Rounded corners */
+    font-size: 1rem;
+    /* Standard font size */
+    color: #34495e;
+    /* Darker text color */
+    transition: border-color 0.3s;
+    /* Smooth transition for border color */
+}
+
+input[type="text"]:focus,
+select:focus {
+    border-color: #5663f7;
+    /* Change border color on focus */
+    outline: none;
+    /* Remove default outline */
+}
+
+/* Duration selector styles */
+.duration-selector select {
+    width: 100%;
+    /* Full width for select */
+}
+
+/* Timezone display styles */
+.timezone-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Space between icon and text */
+    padding: 12px;
+    /* Padding for timezone display */
+    border: 1px solid #ddd;
+    /* Light border */
+    border-radius: 8px;
+    /* Rounded corners */
+    background-color: #ffffff;
+    /* White background */
+}
+
+/* Note styles */
+.timezone-note {
+    font-size: 0.9rem;
+    /* Smaller font size for notes */
+    color: #777;
+    /* Gray color for notes */
+    margin-top: 5px;
+    /* Space above note */
+}
+
+.schedule-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+}
+
+/* Label styles */
+.form-group label {
+    font-size: 1rem;
+    color: #34495e;
+    margin-bottom: 5px;
+}
+
+/* Input field styles */
+input[type="text"],
+select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #34495e;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+select:focus {
+    border-color: #5663f7;
+    outline: none;
+}
+
+/* Dropdown container styles */
+.dropdown-container {
+    position: relative;
+}
+
+/* Dropdown header styles */
+.dropdown-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.dropdown-header:hover {
+    border-color: #5663f7;
+}
+
+/* Dropdown menu styles */
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+/* Time slots grid */
+.time-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+}
+
+/* Time slot styles */
+.time-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    transition: all 0.3s;
     cursor: pointer;
     font-size: 0.9rem;
+}
 
-    .today-badge {
-        display: inline-block;
-        background-color: #5663f7;
-        color: white;
-        font-size: 0.7rem;
-        padding: 2px 6px;
-        border-radius: 10px;
-        margin-left: 8px;
-    }
+.time-slot:hover {
+    border-color: #5663f7;
+    background-color: #f0f4ff;
+}
 
-    .date-option.today {
-        font-weight: 500;
-    }
+/* Schedule button */
+.schedule-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px;
+    background-color: #5663f7;
+    color: white;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
 
-    .duration-selector select {
-        width: 100%;
-        padding: 12px 16px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        background-color: white;
-        font-size: 0.9rem;
-        color: #333;
-        appearance: none;
-        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-position: right 16px center;
-        background-size: 16px;
-    }
+.schedule-button:hover:not(:disabled) {
+    background-color: #4552e5;
+    transform: translateY(-2px);
+}
 
-    /* Timezone */
-    .timezone-display {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 16px;
-        background-color: #f5f7ff;
-        border-radius: 6px;
-        color: #333;
-    }
+.schedule-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
 
-    .timezone-note {
-        margin-top: 8px;
-        font-size: 0.8rem;
-        color: #666;
-    }
+/* Confirmation message styles */
+.confirmation-message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
 
-    /* Time slots section */
-    .time-slots-section {
-        margin-bottom: 30px;
-    }
-
-    .time-slots-section h3 {
-        margin: 0 0 5px 0;
-        color: #333;
-    }
-
-    .time-slots-subtitle {
-        color: #666;
-        font-size: 0.9rem;
-        margin-bottom: 15px;
-    }
-
-    .time-slots-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-        gap: 10px;
-    }
-
-    .time-slot {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 12px;
-        background-color: white;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s;
-        position: relative;
-    }
-
-    .time-slot:hover {
-        border-color: #5663f7;
-        transform: translateY(-2px);
-    }
-
-    .time-slot.selected {
-        background-color: #f0f2ff;
-        border-color: #5663f7;
-        font-weight: 500;
-    }
-
-    .check-icon {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        color: #5663f7;
-    }
-
-    /* Selected time slots summary */
-    .selected-slots-summary {
-        background-color: #f0f2ff;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 20px;
-    }
-
-    .selected-slots-summary h3 {
-        margin: 0 0 10px 0;
-        color: #333;
-        font-size: 1rem;
-    }
-
-    .selected-slots-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .selected-slot-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        background-color: white;
-        border-radius: 6px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    .remove-slot {
-        cursor: pointer;
-        color: #999;
-        transition: color 0.2s;
-    }
-
-    .remove-slot:hover {
-        color: #f44336;
-    }
-
-    /* Schedule button */
-    .schedule-actions {
-        margin-top: auto;
-        padding-top: 20px;
-    }
-
-    .schedule-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        width: 100%;
-        padding: 14px;
-        background-color: #5663f7;
-        color: white;
-        font-weight: 500;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .schedule-button:hover:not(:disabled) {
-        background-color: #4552e5;
-        transform: translateY(-2px);
-    }
-
-    .schedule-button:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .schedule-form {
-            grid-template-columns: 1fr;
-        }
-
-        .time-slots-grid {
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-        }
-    }
-
-    .selected-student {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .student-info {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .student-name {
-        font-weight: 500;
-        color: #333;
-    }
-
-    .student-id {
-        font-size: 0.8rem;
-        color: #666;
-    }
-
-    .student-email {
-        margin-left: 8px;
-        color: #5663f7;
-        font-size: 0.8rem;
-    }
-
-    .category-tag {
-        display: inline-block;
-        background-color: #f0f2ff;
-        color: #5663f7;
-        font-size: 0.7rem;
-        padding: 2px 8px;
-        border-radius: 10px;
-        margin-right: 8px;
-    }
-
-    /* Session Summary */
-    .session-summary {
-        background-color: #f0f2ff;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 20px;
-    }
-
-    .session-summary h3 {
-        margin: 0 0 10px 0;
-        color: #333;
-        font-size: 1rem;
-    }
-
-    .summary-details {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-
-    .summary-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.9rem;
-        color: #555;
-    }
-
-    .summary-item svg {
-        color: #5663f7;
-    }
-
-    .summary-item strong {
-        font-weight: 500;
-        margin-right: 4px;
-    }
-
-    @media (max-width: 768px) {
-        .summary-details {
-            grid-template-columns: 1fr;
-        }
-    }
+/* Note styles */
+.timezone-note {
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: 5px;
 }
