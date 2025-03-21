@@ -1,0 +1,334 @@
+.upcoming-session-container {
+    display: flex;
+    flex-direction: column;
+    padding: 10%;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-top: 4%;
+    color: black;
+    margin-right: 10%;
+    margin-bottom: 10%;
+    width: 100%;
+}
+
+
+.upcoming-session-container h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    display: none;
+}
+
+.subtitle {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-top: 0;
+    margin-bottom: 25px;
+    display: none;
+}
+
+.upcoming-session-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+.session-card {
+    background-color: white;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+}
+
+.session-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--hover-shadow);
+}
+
+.session-card.in-progress {
+    border-left: 4px solid var(--primary-color);
+}
+
+.session-card.starting-soon {
+    border-left: 4px solid var(--warning-color);
+}
+
+.session-card.upcoming {
+    border-left: 4px solid var(--accent-color);
+}
+
+.session-card.completed {
+    border-left: 4px solid var(--success-color);
+    opacity: 0.8;
+}
+
+.session-content {
+    padding: 20px;
+    flex: 1;
+}
+
+.session-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.session-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.session-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 12px;
+}
+
+.session-status.in-progress {
+    background-color: rgba(45, 92, 184, 0.1);
+    color: var(--primary-color);
+}
+
+.session-status.starting-soon {
+    background-color: rgba(243, 156, 18, 0.1);
+    color: var(--warning-color);
+}
+
+.session-status.upcoming {
+    background-color: rgba(61, 125, 216, 0.1);
+    color: var(--accent-color);
+}
+
+.session-status.completed {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--success-color);
+}
+
+.session-time {
+    margin-bottom: 15px;
+}
+
+.session-detail {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.session-detail svg {
+    color: #94a3b8;
+    flex-shrink: 0;
+}
+
+.session-status-text {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #1e293b;
+    margin-top: 12px;
+}
+
+.session-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 20px;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--secondary-color);
+}
+
+.join-meeting-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.join-meeting-btn:hover {
+    background-color: #234890;
+}
+
+.join-meeting-btn:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.reschedule-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: white;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+
+    .more-sessions {
+        text-align: center;
+        padding: 10px;
+        color: #5663f7;
+        font-weight: 500;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .more-sessions:hover {
+        text-decoration: underline;
+    }
+
+    .no-sessions {
+        background-color: white;
+        border-radius: 8px;
+        padding: 30px;
+        text-align: center;
+        color: #888;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .schedule-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background-color: #5663f7;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .schedule-btn:hover {
+        background-color: #4552e5;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Meeting dialog */
+    .meeting-dialog-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .meeting-dialog {
+        background-color: white;
+        border-radius: 8px;
+        padding: 25px;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .meeting-dialog h3 {
+        margin: 0 0 15px 0;
+        color: #333;
+    }
+
+    .meeting-details {
+        background-color: #f5f7fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    .meeting-details strong {
+        display: block;
+        margin-bottom: 10px;
+        color: #333;
+        font-size: 1.1rem;
+    }
+
+    .meeting-detail {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        color: #666;
+    }
+
+    .meeting-detail svg {
+        margin-right: 8px;
+        color: #888;
+    }
+
+    .meeting-info {
+        margin-bottom: 20px;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .meeting-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+    }
+
+    .cancel-meeting-btn {
+        padding: 10px 16px;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        color: #666;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .cancel-meeting-btn:hover {
+        background-color: #f5f5f5;
+        transform: translateY(-2px);
+    }
+
+    .start-meeting-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background-color: #5663f7;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .start-meeting-btn:hover {
+        background-color: #4552e5;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+}

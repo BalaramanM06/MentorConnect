@@ -65,7 +65,7 @@ public class MentorService {
         String email = jwtUtil.extractEmail(token);
 
         try {
-            // // Save file temporarily for Tesseract processing
+            // Save file temporarily for Tesseract processing
             // Path tempFile = Files.createTempFile("certificate", ".png");
             // Files.copy(certificate.getInputStream(), tempFile,
             // StandardCopyOption.REPLACE_EXISTING);

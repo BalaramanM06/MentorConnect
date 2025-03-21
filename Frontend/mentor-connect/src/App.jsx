@@ -22,6 +22,7 @@ import Enroll from "./components/Student/Enroll.jsx";
 import StudentResources from "./components/Student/StudentResources.jsx";
 import UpcomingSessions from "./components/Student/UpcomingSessions.jsx";
 import JoinMeeting from "./components/Mentor/JoinMeeting.jsx";
+import AddNewCourse from "./components/Mentor/AddNewCourse.jsx";
 
 function App() {
   const [posts, setPosts] = useState(() => {
@@ -117,6 +118,7 @@ function App() {
         <Route path="/resources" element={<StudentResources />} />
         <Route path="upcoming-sessions" element={<UpcomingSessions />} />
         <Route path="/mentor/join-meeting/:studentName" element={<JoinMeeting />} />
+        <Route path="/mentor/add-course" element={<AddNewCourse />} />
       </Routes>
     </Router>
   );

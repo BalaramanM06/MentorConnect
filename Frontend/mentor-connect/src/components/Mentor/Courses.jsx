@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Search, Clock, Calendar, Users, BookOpen } from "lucide-react";
+import { Search, Clock, Calendar, Users, BookOpen, Plus } from "lucide-react";
 import "./Courses.css";
+import { useNavigate } from "react-router-dom";
 
 const OngoingCourse = () => {
     const [courses, setCourses] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredCourses, setFilteredCourses] = useState([]);
+    const [uploadMessage, setUploadMessage] = useState("");
+    const [isUploadVisible, setIsUploadVisible] = useState(false);
 
     useEffect(() => {
         const storedCourses = JSON.parse(localStorage.getItem("mentorOngoingCourses") || "[]");
@@ -85,6 +88,25 @@ const OngoingCourse = () => {
         });
     };
 
+    const handleAddCourse = () => {
+        alert("Upload certificate for verification to add new course");
+        setIsUploadVisible(true);
+    }
+
+    const handleUpload = (event) => {
+        event.preventDefault();
+        const file = event.target.files[0];
+        if (file) {
+            // Simulate an upload process
+            const formData = new FormData();
+            formData.append("certificate", file);
+            setTimeout(() => {
+                setUploadMessage("Certificate verified successfully!");
+            }, 2000); // Simulate a delay for the upload
+        }
+        navigate("/mentor/add-course");
+    };
+
     return (
         <div className="ongoing-courses-container">
             <div className="ongoing-courses-header">
@@ -98,7 +120,30 @@ const OngoingCourse = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
+                <div className="upload-button-container">
+                    <label>
+                        <button className="add-course-button" onClick={handleAddCourse}>
+                            <Plus size={20} /> Add New Course
+                        </button>
+                    </label>
+                </div>
             </div>
+
+            {isUploadVisible && (
+                <div className="floating-upload-container">
+                    <input
+                        type="file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        onChange={handleUpload}
+                        style={{ display: 'none' }}
+                        id="upload-certificate"
+                    />
+                    <label htmlFor="upload-certificate" className="upload-button">
+                        Upload Certificate
+                    </label>
+                    {uploadMessage && <div className="upload-message">{uploadMessage}</div>}
+                </div>
+            )}
 
             <div className="courses-stats">
                 <div className="stat-item">
