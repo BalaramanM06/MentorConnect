@@ -46,20 +46,18 @@ api.interceptors.response.use(
             return Promise.reject(new Error('Network Error - Unable to connect to the server. Please check your internet connection.'));
         }
 
-        // Authentication errors
         if (error.response.status === 401) {
             console.error('Authentication Error - Unauthorized');
             localStorage.removeItem('authToken');
-            window.location.href = '/login'; // Redirect to login
+            window.location.href = '/login'; 
         }
 
         // CORS errors
         if (error.response.status === 403) {
             console.error('CORS or Permission Error - Forbidden');
-            // Check if authentication is required
             const token = localStorage.getItem('authToken');
             if (!token) {
-                window.location.href = '/login'; // Redirect to login if no token
+                window.location.href = '/login'; 
             }
         }
 

@@ -12,79 +12,42 @@ import api from "../../utils/axiosConfig";
 
 const MentorDashboard = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { firstName, email, role } = location.state || {};
-
   const [activeTab, setActiveTab] = useState("upcoming");
-  const [userProfile, setUserProfile] = useState({});
+  const [userProfile, setUserProfile] = useState([]);
   const [unreadMessages, setUnreadMessages] = useState([]);
-
-  const extractUserFromToken = () => {
-    try {
-      const token = localStorage.getItem('authToken');
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-
-      const payload = JSON.parse(jsonPayload);
-      const email = payload.sub || 'mentor@example.com';
-
-      return {
-        firstName: email.split('@')[0].replace('.', ' '),
-        email: email,
-        role: 'MENTOR'
-      };
-    } catch (error) {
-      console.error("Error extracting user from token:", error);
-      return {
-        firstName: 'Mentor User',
-        email: 'mentor@example.com',
-        role: 'MENTOR'
-      };
-    }
-  };
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    fetchMentorDetails();
+}, []);
+
+const fetchMentorDetails = async () => {
+    setError(null);
+    const token = localStorage.getItem("authToken");
+
     if (!token) {
-      navigate('/login');
-      return;
+        setError("Authentication token missing. Please log in.");
+        setLoading(false);
+        navigate("/login");
+        return;
     }
 
-    // Extract user info from token
-    const tokenUser = extractUserFromToken();
-
-    const fetchUserData = async () => {
-      try {
-        const { email } = tokenUser;
-        const password = 'user_password';
-        const authResponse = await api.post('/api/auth/login', { email, password });
-        if (authResponse.data) {
-          const profileResponse = await api.get('/api/profile', {
-            params: { email: authResponse.data.email }
-          });
-          setUserProfile(profileResponse.data);
-        }
-
-        const messagesResponse = await api.get('/api/chat/unread');
-        if (messagesResponse.data) {
-          setUnreadMessages(messagesResponse.data.messages || []);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        if (error.response && error.response.status === 401) {
-          localStorage.removeItem('authToken');
-          navigate('/login');
+    try {
+        const response = await api.get("/auth/profile");
+        if (response.data?.email) {
+            setUserProfile(response.data);
+            console.log(response.data);
         } else {
-          setUserProfile(tokenUser);
+            setError("Failed to fetch mentor details.");
         }
-      }
-    };
-
-    fetchUserData();
-  }, [navigate]);
+    } catch (err) {
+        console.error("Error fetching mentor details:", err);
+        setError("Failed to fetch mentor details.");
+    } finally {
+        setLoading(false);  
+    }
+};
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
@@ -125,7 +88,7 @@ const MentorDashboard = () => {
 
           <div className="profile-section">
             <img src={userProfile?.profilePic || defaultProfile} alt="Profile" className="profile-pic" />
-            <h3>{userProfile?.firstName || userProfile?.name || firstName || "Mentor Name"}</h3>
+            <h3>{userProfile?.firstName|| "Mentor Name"}</h3>
           </div>
 
           <nav className="dashboard-nav-links">

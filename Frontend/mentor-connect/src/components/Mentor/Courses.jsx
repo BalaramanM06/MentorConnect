@@ -1,249 +1,127 @@
 import React, { useState, useEffect } from "react";
-import { Search, Clock, Calendar, Users, BookOpen, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom"; 
+import { Plus } from "lucide-react";
+import api from "../../utils/axiosConfig";
 import "./Courses.css";
-import { useNavigate } from "react-router-dom";
 
-const OngoingCourse = () => {
+const Courses = () => {
     const [courses, setCourses] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [filteredCourses, setFilteredCourses] = useState([]);
-    const [uploadMessage, setUploadMessage] = useState("");
-    const [isUploadVisible, setIsUploadVisible] = useState(false);
+    const [newCourse, setNewCourse] = useState({ courseName: "", description: "", certificate: null });
+    const [email, setEmail] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [isDropDownClicked, setIsDropDownClicked] = useState(false);
+    const navigate = useNavigate();  
 
     useEffect(() => {
-        const storedCourses = JSON.parse(localStorage.getItem("mentorOngoingCourses") || "[]");
-
-        if (storedCourses.length === 0) {
-            const sampleCourses = [
-                {
-                    id: 1,
-                    title: "Web Development Fundamentals",
-                    student: "Alex Johnson",
-                    studentId: "STU12345",
-                    progress: 65,
-                    nextSession: "2023-06-15T14:00:00",
-                    totalSessions: 12,
-                    completedSessions: 8,
-                    category: "Web Development",
-                    enrollmentDate: "2023-05-01"
-                },
-                {
-                    id: 2,
-                    title: "Data Science Essentials",
-                    student: "Emily Chen",
-                    studentId: "STU67890",
-                    progress: 30,
-                    nextSession: "2023-06-14T10:00:00",
-                    totalSessions: 15,
-                    completedSessions: 4,
-                    category: "Data Science",
-                    enrollmentDate: "2023-05-15"
-                },
-                {
-                    id: 3,
-                    title: "Mobile App Development",
-                    student: "Michael Smith",
-                    studentId: "STU24680",
-                    progress: 80,
-                    nextSession: "2023-06-16T16:00:00",
-                    totalSessions: 10,
-                    completedSessions: 8,
-                    category: "Mobile Development",
-                    enrollmentDate: "2023-04-20"
-                }
-            ];
-
-            localStorage.setItem("mentorOngoingCourses", JSON.stringify(sampleCourses));
-            setCourses(sampleCourses);
-        } else {
-            setCourses(storedCourses);
-        }
+        fetchMentorDetails();
     }, []);
 
-    useEffect(() => {
-        // Filter courses based on search term
-        const filtered = courses.filter(
-            course =>
-                course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                course.student.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                course.category.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setFilteredCourses(filtered);
-    }, [searchTerm, courses]);
+    const fetchMentorDetails = async () => {
+        setError(null);
+        const token = localStorage.getItem("authToken");
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-        });
-    };
-
-    const formatTime = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-        });
-    };
-
-    const handleAddCourse = () => {
-        alert("Upload certificate for verification to add new course");
-        setIsUploadVisible(true);
-    }
-
-    const handleUpload = (event) => {
-        event.preventDefault();
-        const file = event.target.files[0];
-        if (file) {
-            // Simulate an upload process
-            const formData = new FormData();
-            formData.append("certificate", file);
-            setTimeout(() => {
-                setUploadMessage("Certificate verified successfully!");
-            }, 2000); // Simulate a delay for the upload
+        if (!token) {
+            setError("Authentication token missing. Please log in.");
+            setLoading(false);
+            navigate("/login");
+            return;
         }
-        navigate("/mentor/add-course");
+
+        try {
+            const response = await api.get("/auth/profile");
+            if (response.data?.email) {
+                setEmail(response.data.email);
+                setCourses(response.data.courses || []);
+            } else {
+                setError("Failed to fetch mentor details.");
+            }
+        } catch (err) {
+            console.error("Error fetching mentor details:", err);
+            setError("Failed to fetch mentor details.");
+        } finally {
+            setLoading(false);
+        }
     };
+
+    const handleChange = (e) => {
+        setNewCourse({ ...newCourse, [e.target.name]: e.target.value });
+    };
+
+    const toggleDropDown = () => {
+        setIsDropDownClicked((prev) => !prev);
+    };
+
+    const handleFileChange = (e) => {
+        setNewCourse({ ...newCourse, certificate: e.target.files[0] });
+    };
+
+    const handleAddCourse = async (e) => {
+        e.preventDefault();
+        if (!email) {
+            alert("Mentor email not found. Please log in again.");
+            return;
+        }
+
+        const formData = new FormData();
+        if (newCourse.certificate) formData.append("certificate", newCourse.certificate);
+        formData.append("mentorName", email);
+        formData.append("courseName", newCourse.courseName);
+        formData.append("description", newCourse.description);
+
+        try {
+            await api.post("/mentor/validateCertificate", formData, {
+                headers: { "Content-Type": "multipart/form-data" }
+            });
+
+            alert("Course added successfully!");
+            setCourses([...courses, { ...newCourse }]); 
+            setNewCourse({ courseName: "", description: "", certificate: null });
+            setIsDropDownClicked(false);
+        } catch (err) {
+            console.error("Error adding course:", err);
+            setError("Failed to add course.");
+        }
+    };
+
+    if (loading) return <p>Loading courses...</p>;
+    if (error) return <p>{error}</p>;
 
     return (
-        <div className="ongoing-courses-container">
-            <div className="ongoing-courses-header">
-                <h2>Ongoing Courses</h2>
-                <div className="search-bar">
-                    <Search size={20} />
-                    <input
-                        type="text"
-                        placeholder="Search courses or students..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </div>
-                <div className="upload-button-container">
-                    <label>
-                        <button className="add-course-button" onClick={handleAddCourse}>
-                            <Plus size={20} /> Add New Course
-                        </button>
-                    </label>
-                </div>
-            </div>
-
-            {isUploadVisible && (
-                <div className="floating-upload-container">
-                    <input
-                        type="file"
-                        accept=".pdf,.jpg,.jpeg,.png"
-                        onChange={handleUpload}
-                        style={{ display: 'none' }}
-                        id="upload-certificate"
-                    />
-                    <label htmlFor="upload-certificate" className="upload-button">
-                        Upload Certificate
-                    </label>
-                    {uploadMessage && <div className="upload-message">{uploadMessage}</div>}
-                </div>
-            )}
-
-            <div className="courses-stats">
-                <div className="stat-item">
-                    <div className="stat-icon students">
-                        <Users size={24} />
-                    </div>
-                    <div className="stat-content">
-                        <h3>{courses.length}</h3>
-                        <p>Active Students</p>
-                    </div>
-                </div>
-
-                <div className="stat-item">
-                    <div className="stat-icon sessions">
-                        <Clock size={24} />
-                    </div>
-                    <div className="stat-content">
-                        <h3>{courses.reduce((total, course) => total + course.completedSessions, 0)}</h3>
-                        <p>Completed Sessions</p>
-                    </div>
-                </div>
-
-                <div className="stat-item">
-                    <div className="stat-icon upcoming">
-                        <Calendar size={24} />
-                    </div>
-                    <div className="stat-content">
-                        <h3>{courses.length}</h3>
-                        <p>Upcoming Sessions</p>
-                    </div>
+        <div className="courses-container">
+            <div className="course-heading">
+                <h2>My Courses</h2>
+                <div className="add-course-form">
+                    <button className="add-course-btn" onClick={toggleDropDown}>
+                        <Plus size={16} /> Add Course
+                    </button>
+                    {isDropDownClicked && (
+                        <div className="dropdown-content">
+                            <form onSubmit={handleAddCourse}>
+                                <input type="text" name="courseName" placeholder="Course Name" value={newCourse.courseName} onChange={handleChange} required />
+                                <input type="text" name="description" placeholder="Description" value={newCourse.description} onChange={handleChange} required />
+                                <input type="file" name="certificate" onChange={handleFileChange} required />
+                                <button type="submit">Submit</button>
+                            </form>
+                        </div>
+                    )}
                 </div>
             </div>
 
             <div className="course-list">
-                {filteredCourses.length > 0 ? (
-                    filteredCourses.map(course => (
-                        <div key={course.id} className="course-card">
-                            <div className="course-header">
-                                <BookOpen size={24} />
-                                <div>
-                                    <h3>{course.title}</h3>
-                                    <span className="course-category">{course.category}</span>
-                                </div>
-                            </div>
-
-                            <div className="course-details">
-                                <div className="detail-item">
-                                    <strong>Student:</strong>
-                                    <span>{course.student} ({course.studentId})</span>
-                                </div>
-
-                                <div className="detail-item">
-                                    <strong>Enrolled On:</strong>
-                                    <span>{formatDate(course.enrollmentDate)}</span>
-                                </div>
-
-                                <div className="detail-item">
-                                    <strong>Next Session:</strong>
-                                    <span>{formatDate(course.nextSession)} at {formatTime(course.nextSession)}</span>
-                                </div>
-
-                                <div className="detail-item">
-                                    <strong>Sessions:</strong>
-                                    <span>{course.completedSessions} of {course.totalSessions} completed</span>
-                                </div>
-                            </div>
-
-                            <div className="course-progress">
-                                <div className="progress-info">
-                                    <span>Progress</span>
-                                    <span>{course.progress}%</span>
-                                </div>
-                                <div className="progress-bar">
-                                    <div
-                                        className="progress-fill"
-                                        style={{ width: `${course.progress}%` }}
-                                    ></div>
-                                </div>
-                            </div>
-
-                            <div className="course-actions">
-                                <button className="view-details-btn">View Details</button>
-                                <button className="schedule-btn">Schedule Session</button>
-                            </div>
+                {courses.length > 0 ? (
+                    courses.map((course, index) => (
+                        <div key={index} className="course-card">
+                            <h3>{course.courseName || "No Title"}</h3>
+                            <p>{course.description || "No Description"}</p>
                         </div>
                     ))
                 ) : (
-                    <div className="no-courses-message">
-                        <BookOpen size={40} />
-                        <h3>No courses found</h3>
-                        {searchTerm ? (
-                            <p>No courses match your search criteria. Try different keywords.</p>
-                        ) : (
-                            <p>You don't have any ongoing courses at the moment.</p>
-                        )}
-                    </div>
+                    <p>No courses found.</p>
                 )}
             </div>
         </div>
     );
 };
 
-export default OngoingCourse; 
+export default Courses;

@@ -9,12 +9,11 @@ import api from "../../utils/axiosConfig";
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const [user, setUser] = useState(null);
-
-  const [enrolledCourses, setEnrolledCourses] = useState([]);
-  const [currentMentors, setCurrentMentors] = useState([]);
+  const [userProfile, setUserProfile] = useState([]);
+  const [oldCourses , setOldCourses] = useState([]) ;
+  const [newCourses , setNewCourses] = useState([]) ;
+  const [courseDetail, setCourseDetail] = useState([]);
+  const [pendingRequest, setPendingRequest] = useState([]);
   const [scheduledSessions, setScheduledSessions] = useState([]);
   const [unreadMessages, setUnreadMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,148 +21,54 @@ const StudentDashboard = () => {
   const [allCourse, setAllCourse] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    fetchMentorDetails();
+}, []);
+
+const fetchMentorDetails = async () => {
+    setError(null);
+    const token = localStorage.getItem("authToken");
+
     if (!token) {
-      navigate('/login');
-      return;
+        setError("Authentication token missing. Please log in.");
+        setIsLoading(false);
+        navigate("/login");
+        return;
     }
 
-    const extractUserFromToken = () => {
-      try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-
-        const payload = JSON.parse(jsonPayload);
-        const email = payload.sub || 'student@example.com';
-
-        return {
-          name: email.split('@')[0].replace('.', ' '),
-          email: email,
-          role: 'MENTEE'
-        };
-      } catch (error) {
-        console.error("Error extracting user from token:", error);
-        return {
-          name: 'Student User',
-          email: 'student@example.com',
-          role: 'MENTEE'
-        };
-      }
-    };
-
-    const fetchUserData = async () => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        try {
-          const userResponse = await api.get('/auth/profile');
-          if (userResponse.data) {
-            setUser(userResponse.data);
-          } else {
-            setUser(extractUserFromToken());
-          }
-        } catch (userError) {
-          console.error("Error fetching user profile:", userError);
-          setUser(extractUserFromToken());
+    try {
+        const response = await api.get("/auth/profile");
+        const allCourseResponse = await api.get('/mentee/getAllCourse');
+        const enrolledCourseResponse = await api.get('/mentee/getNewCourse');
+        const oldCourseResponse = await api.get('/mentee/getOldCourse');
+        const pendingRequestResponse = await api.get('/mentee/getPendingRequest');  
+        const courseDetailResponse = await api.get('/mentee/getMenteeCourseDetail');
+        if (response.data?.email) {
+            setUserProfile(response.data);
+            console.log(response.data);
         }
-
-        try {
-          const coursesResponse = await api.get('/mentee/getEnrolledCourse');
-          if (coursesResponse.data) {
-            const courses = Array.isArray(coursesResponse.data)
-              ? coursesResponse.data
-              : (coursesResponse.data.courses || []);
-
-            setEnrolledCourses(courses);
-
-            localStorage.setItem("enrolledCourses", JSON.stringify(courses));
-
-            const currentMentorsData = [];
-            courses.forEach(course => {
-              if (course.mentor || course.mentorName) {
-                currentMentorsData.push({
-                  id: course.mentorId || `mentor-${Date.now()}`,
-                  name: course.mentor || course.mentorName,
-                  email: course.mentorEmail || `${(course.mentor || course.mentorName).toLowerCase().replace(/\s+/g, '.')}@example.com`,
-                  courseId: course.id || course.courseId,
-                  courseName: course.title || course.courseName
-                });
-              }
-            });
-
-            const uniqueMentors = Array.from(new Map(currentMentorsData.map(m => [m.email, m])).values());
-            setCurrentMentors(uniqueMentors);
-          }
-        } catch (coursesError) {
-          console.error("Error fetching enrolled courses:", coursesError);
-
-          const storedCourses = JSON.parse(localStorage.getItem("enrolledCourses") || "[]");
-          setEnrolledCourses(storedCourses);
-
-          if (storedCourses.length > 0) {
-            const storedMentors = storedCourses
-              .filter(course => course.mentor || course.mentorName)
-              .map(course => ({
-                id: course.mentorId || `mentor-${Date.now()}`,
-                name: course.mentor || course.mentorName,
-                email: course.mentorEmail || `${(course.mentor || course.mentorName).toLowerCase().replace(/\s+/g, '.')}@example.com`,
-                courseId: course.id || course.courseId,
-                courseName: course.title || course.courseName
-              }));
-
-            const uniqueMentors = Array.from(new Map(storedMentors.map(m => [m.email, m])).values());
-            setCurrentMentors(uniqueMentors);
-          }
+        if (allCourseResponse.data) {
+            setAllCourse(allCourseResponse.data);
         }
-
-        try {
-          const sessionsResponse = await api.get('/mentee/getPendingRequest');
-          if (sessionsResponse.data) {
-            const sessions = Array.isArray(sessionsResponse.data)
-              ? sessionsResponse.data
-              : (sessionsResponse.data.sessions || []);
-
-            setScheduledSessions(sessions);
-          }
-        } catch (sessionsError) {
-          console.error("Error fetching scheduled sessions:", sessionsError);
-          setScheduledSessions([]);
+        if (enrolledCourseResponse.data) {
+            setNewCourses(enrolledCourseResponse.data);
         }
-
-        // Fetch all courses
-        try {
-          const allCoursesResponse = await api.get('/mentee/getAllCourse');
-          if (allCoursesResponse.data) {
-            const courses = Array.isArray(allCoursesResponse.data)
-              ? allCoursesResponse.data
-              : (allCoursesResponse.data.courses || []);
-
-            setAllCourse(courses);
-          }
-        } catch (allCoursesError) {
-          console.error("Error fetching all courses:", allCoursesError);
-          setAllCourse([]);
+        if (oldCourseResponse.data) {
+            setOldCourses(oldCourseResponse.data);
         }
-
-      } catch (err) {
-        console.error("Error fetching student data:", err);
-        setError("Failed to load your dashboard data. Please try again later.");
-
-        if (err.response && err.response.status === 401) {
-          localStorage.removeItem('authToken');
-          navigate('/login');
+        if (pendingRequestResponse.data) {
+            setPendingRequest(pendingRequestResponse.data);
         }
-      } finally {
-        setIsLoading(false);
-      }
-    };
+        if (courseDetailResponse.data) {
+            setCourseDetail(courseDetailResponse.data);
+        }
+    } catch (err) {
+        console.error("Error fetching mentor details:", err);
+        setError("Failed to fetch mentor details.");
+    } finally {
+        setIsLoading(false);  
+    }
+};
 
-    fetchUserData();
-  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
@@ -202,10 +107,10 @@ const StudentDashboard = () => {
       <div className="dashboard-sidebar">
         <div className="sidebar-top">
           <div className="sidebar-profile">
-            <img src={user?.profilePic || defaultProfile} alt="Profile" />
+            <img src={userProfile?.profilePic || defaultProfile} alt="Profile" />
             <div className="profile-info">
-              <h3>{user?.firstName || "Student"}</h3>
-              <p>{user?.email || "student@example.com"}</p>
+              <h3>{userProfile?.firstName || "Student"}</h3>
+              <p>{userProfile?.email || "student@example.com"}</p>
             </div>
           </div>
         </div>
@@ -257,7 +162,7 @@ const StudentDashboard = () => {
         )}
 
         <header className="dashboard-header">
-          <h1>Welcome, {user?.firstName || "Student"}!</h1>
+          <h1>Welcome, {userProfile?.firstName || "Student"}!</h1>
           <StudentNotification />
         </header>
         <div className="dashboard-cards">
@@ -267,9 +172,9 @@ const StudentDashboard = () => {
               <button onClick={() => navigate('/course-tracker')}>View All</button>
             </div>
             <div className="card-content">
-              {enrolledCourses.length > 0 ? (
+              {newCourses.length > 0 ? (
                 <div className="course-list">
-                  {enrolledCourses.slice(0, 3).map((course, index) => (
+                  {newCourses.slice(0, 3).map((course, index) => (
                     <div className="course-item" key={index}>
                       <div className="course-icon">
                         <BookOpenCheck size={20} />
@@ -303,9 +208,9 @@ const StudentDashboard = () => {
               <h2>My Mentors</h2>
             </div>
             <div className="card-content">
-              {currentMentors.length > 0 ? (
+              {pendingRequest.length > 0 ? (
                 <div className="mentors-list">
-                  {currentMentors.slice(0, 3).map((mentor, index) => (
+                  {pendingRequest.slice(0, 3).map((mentor, index) => (
                     <div className="mentor-item" key={index}>
                       <div className="mentor-avatar">
                         <img src={mentor.profilePic || defaultProfile} alt={mentor.name} />

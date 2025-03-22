@@ -1,70 +1,54 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Bell, Check, X, Calendar, Clock, BookOpen, User, Mail } from "lucide-react";
 import "./Invitation.css";
+import api from "../../utils/axiosConfig";
 
 const Invitation = () => {
     const [showInvitations, setShowInvitations] = useState(false);
     const [invitations, setInvitations] = useState([]);
     const [unreadCount, setUnreadCount] = useState(0);
     const invitationRef = useRef(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
 
     useEffect(() => {
-        const storedInvitations = JSON.parse(localStorage.getItem("mentorInvitations") || "[]");
-        if (storedInvitations.length === 0) {
-            const sampleInvitations = [
-                {
-                    id: 1,
-                    student: {
-                        name: "Alex Johnson",
-                        id: "STU12345",
-                        profilePic: null
-                    },
-                    course: "Web Development Fundamentals",
-                    message: "I'm interested in your expertise in React and modern web development. Would you be available to mentor me?",
-                    date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-                    read: false
-                },
-                {
-                    id: 2,
-                    student: {
-                        name: "Emily Chen",
-                        id: "STU67890",
-                        profilePic: null
-                    },
-                    course: "Data Science Essentials",
-                    message: "Looking for guidance on machine learning projects and building a portfolio.",
-                    date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-                    read: true
-                },
-                {
-                    id: 3,
-                    student: {
-                        name: "Michael Smith",
-                        id: "STU24680",
-                        profilePic: null
-                    },
-                    course: "Mobile App Development",
-                    message: "Need help with app architecture and publishing to app stores.",
-                    date: new Date().toISOString(),
-                    read: false
-                }
-            ];
-
-            localStorage.setItem("mentorInvitations", JSON.stringify(sampleInvitations));
-            setInvitations(sampleInvitations);
-        } else {
-            setInvitations(storedInvitations);
-        }
+        fetchMentorDetails();
     }, []);
 
+    const fetchMentorDetails = async () => {
+        setError(null);
+        const token = localStorage.getItem("authToken");
+
+        if (!token) {
+            setError("Authentication token missing. Please log in.");
+            setLoading(false);
+            navigate("/login");
+            return;
+        }
+
+        try {
+            const response = await api.get("/auth/profile");
+            if (response.data?.getAllPendingRequest) {
+                setInvitations(response.data.getAllPendingRequest);
+                console.log(invitations);
+            } else {
+                setError("Failed to fetch mentor details.");
+            }
+        } catch (err) {
+            console.error("Error fetching mentor details:", err);
+            setError("Failed to fetch mentor details.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        // Count unread invitations
         const count = invitations.filter(inv => !inv.read).length;
         setUnreadCount(count);
     }, [invitations]);
 
     useEffect(() => {
-        // Close the dropdown when clicking outside
         function handleClickOutside(event) {
             if (invitationRef.current && !invitationRef.current.contains(event.target)) {
                 setShowInvitations(false);
@@ -82,7 +66,6 @@ const Invitation = () => {
     };
 
     const handleInvitationClick = (id) => {
-        // Mark as read when clicked
         const updatedInvitations = invitations.map(inv => {
             if (inv.id === id && !inv.read) {
                 return { ...inv, read: true };
@@ -104,8 +87,6 @@ const Invitation = () => {
 
         setInvitations(updatedInvitations);
         localStorage.setItem("mentorInvitations", JSON.stringify(updatedInvitations));
-
-        // In a real app, you would send this acceptance to your backend
         alert("Invitation accepted successfully!");
     };
 
@@ -120,7 +101,6 @@ const Invitation = () => {
         setInvitations(updatedInvitations);
         localStorage.setItem("mentorInvitations", JSON.stringify(updatedInvitations));
 
-        // In a real app, you would send this rejection to your backend
         alert("Invitation rejected.");
     };
 
