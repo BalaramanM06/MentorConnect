@@ -4,7 +4,14 @@
     padding: 20px;
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px #0000001a;
+    width: 80%;
+    margin-top: 80px;
+  }
+
+  .course-tracker-header {
+    margin-left: 30%;
+    padding-bottom: 50px;
   }
   
   h2 {
@@ -15,12 +22,12 @@
     margin-bottom: 15px;
   }
   
-  .title-icon {
+  .book-open-title-icon {
     margin-right: 8px;
     color: #4a90e2;
   }
   
-  /* Notification Bar */
+
   .notification-bar {
     background-color: #eaf4ff;
     padding: 10px;

@@ -4,25 +4,58 @@ import "./CourseTracker.css";
 import { CheckCircle, Clock, Filter, Download, ExternalLink, BookOpen } from "lucide-react";
 import certificateTemplate from "../../assets/certificateTemplate.png";
 import StudentNotification from "./StudentNotification";
+import api from "../../utils/axiosConfig";
 
 const CourseTracker = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const [filter, setFilter] = useState("All");
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [notification, setNotification] = useState("");
+  const [currentCourse, setCurrentCourse] = useState([]);
+  const [pastCourse, setPastCourse] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    const storedCourses = JSON.parse(localStorage.getItem("enrolledCourses") || "[]");
-    setEnrolledCourses(storedCourses);
-
-    if (location.state?.message) {
-      setNotification(location.state.message);
-      setTimeout(() => {
-        setNotification("");
-      }, 5000);
-    }
-  }, [location.state]);
+    const fetchCourses = async () => {
+      try {
+        const enrolledResponse = await api.get("/mentee/getNewCourse");
+        const completedResponse = await api.get("/mentee/getOldCourse");
+        if (enrolledResponse.data) {
+          const formattedCourses = enrolledResponse.data.map(data => ({
+            courseName: data.course.courseName,
+            courseId: data.course.id,
+            level: "Intermediate",
+            status: "Ongoing",
+            enrollmentDate: data.course.enrollmentDate,
+            category: data.course.category,
+            mentor: `${data.user.firstName} ${data.user.lastName ? data.user.lastName : ""}`,
+          }));
+          setCurrentCourse(formattedCourses); 
+          console.log(formattedCourses);
+        }
+        if (completedResponse.data) {
+          const formattedCourses = completedResponse.data.map(data => ({
+            courseName: data.course.courseName,
+            courseId: data.course.id,
+            level: "Intermediate",
+            status: "Completed",
+            completionDate: data.course.completionDate,
+            category: data.course.category,
+            mentor: `${data.user.firstName} ${data.user.lastName ? data.user.lastName : ""}`,
+          }));
+          setPastCourse(formattedCourses); 
+          console.log(formattedCourses);
+        }
+      } catch (err) {
+        console.error("Error fetching courses:", err);
+        setError("Failed to fetch courses.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchCourses();
+  }, []);
 
   const filteredCourses = filter === "All"
     ? enrolledCourses
@@ -31,7 +64,7 @@ const CourseTracker = () => {
   const downloadCertificate = (course) => {
     const link = document.createElement('a');
     link.href = certificateTemplate;
-    link.download = `${course.title.replace(/\s+/g, '_')}_Certificate.jpg`;
+    link.download = `${course.title.replace(/\s+/g, '_')}_Certificate.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -43,16 +76,10 @@ const CourseTracker = () => {
 
   return (
     <div className="course-tracker-container">
-      <StudentNotification />
-      <h2><BookOpen size={28} className="title-icon" /> My Learning Journey</h2>
+      <div className="course-tracker-header">
+        <h2><BookOpen size={28} className="book-open-title-icon" /> My Learning Journey</h2>
+      </div>
 
-      {notification && (
-        <div className="notification-bar">
-          {notification}
-        </div>
-      )}
-
-      {/* Filter Options */}
       <div className="filter-section">
         <Filter size={20} />
         <div className="filter-buttons">
@@ -62,7 +89,6 @@ const CourseTracker = () => {
         </div>
       </div>
 
-      {/* Course Table */}
       {filteredCourses.length > 0 ? (
         <div className="course-table-container">
           <table className="course-table">

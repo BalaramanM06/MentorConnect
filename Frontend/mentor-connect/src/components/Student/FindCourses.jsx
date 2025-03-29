@@ -6,21 +6,42 @@ import api from "../../utils/axiosConfig";
 
 const FindCourses = () => {
   const navigate = useNavigate();
-  const [courseDetails , setCourseDetails] = useState([]);
+  const [courseDetails, setCourseDetails] = useState([]);
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+  const [completedCourses, setCompletedCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("All");
   const [categoryFilter, setCategoryFilter] = useState("All");
+  const [courseAndMentor, setCourseAndMentor] = useState([]);
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         const response = await api.get("/mentee/getAllCourse");
-        if(response.data){
-          const allCourses = response.data.map(item => item.course);
-          setCourseDetails(allCourses);
-          console.log(allCourses);
+        const enrolledResponse = await api.get("/mentee/getNewCourse");
+        const completedResponse = await api.get("/mentee/getOldCourse");
+
+        if (response.data) {
+          setCourseDetails(response.data);
+          const formattedCourses = response.data.map(data => ({
+            courseName: data.course.courseName,
+            description: data.course.description,
+            id: data.course.id,
+            level: "Intermediate",
+            price: "Free",
+            status: "Upcoming",
+            duration: "90 min",
+            mentor: `${data.user.firstName} ${data.user.lastName ? data.user.lastName : ""}`,
+          }));
+          setCourseAndMentor(formattedCourses);
+        }
+        if (enrolledResponse.data) {
+          setEnrolledCourses(enrolledResponse.data.map(course => course.id));
+        }
+        if (completedResponse.data) {
+          setCompletedCourses(completedResponse.data.map(course => course.id));
         }
       } catch (err) {
         console.error("Error fetching courses:", err);
@@ -65,33 +86,32 @@ const FindCourses = () => {
       </header>
 
       <div className="courses-list">
-        {courseDetails.length > 0 ? (
-          courseDetails.map((course, index) => (
+        {courseAndMentor.length > 0 ? (
+          courseAndMentor.map((course, index) => (
             <div key={course.id || index} className="course-card">
               <div className="course-info">
                 <h2>{course.courseName}</h2>
-                <p className="course-instructor"><strong>Instructor:</strong> {course.instructor || "N/A"}</p>
+                <p className="course-instructor"><strong>Instructor:</strong> {course.mentor}</p>
                 <p className="course-description">{course.description}</p>
                 <div className="course-details">
-                  <span><strong>Duration:</strong> {course.duration || "Unknown"}</span>
-                  <span><strong>Price:</strong> {course.price || "Free"}</span>
-                </div>
-                <div className="course-tags">
-                  {course.category && <span className="course-category">{course.category}</span>}
-                  {course.level && <span className="course-level">{course.level}</span>}
+                  <span><strong>Duration:</strong> {course.duration}</span>
+                  <span><strong>Price:</strong> {course.price}</span>
                 </div>
                 <div className="course-status">
-                  {course.status === "Completed" ? (
-                    <CheckCircle className="status-icon completed" size={20} />
-                  ) : course.status === "Ongoing" ? (
-                    <PlayCircle className="status-icon ongoing" size={20} />
-                  ) : (
-                    <Clock className="status-icon upcoming" size={20} />
+                  {enrolledCourses.includes(course.id) && (
+                    <>
+                      <CheckCircle className="status-icon completed" size={20} />
+                      <span className="status-text">Enrolled</span>
+                    </>
                   )}
-                  <span className={`status-text ${course.status?.toLowerCase()}`}>{course.status || "Unknown"}</span>
+                  {completedCourses.includes(course.id) && (
+                    <>
+                      <CheckCircle className="status-icon completed" size={20} />
+                      <span className="status-text">Completed</span>
+                    </>
+                  )}
                 </div>
               </div>
-          
               <div className="course-actions">
                 {course.status === "Upcoming" && (
                   <button className="enroll-button" onClick={() => handleEnroll(course)}>
@@ -110,7 +130,7 @@ const FindCourses = () => {
                 )}
               </div>
             </div>
-          ))          
+          ))
         ) : (
           <p className="no-courses">No courses found.</p>
         )}
